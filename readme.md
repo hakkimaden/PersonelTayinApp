@@ -1,1 +1,1 @@
-Açıklama Güncellendi.
+Readme dosyası ile ilgili güncelleme yapıldı.
