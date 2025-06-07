@@ -164,3 +164,102 @@ Sistem, RESTful API prensiplerine uygun olarak tasarlanmış endpoint'ler sunar:
 ## Proje Yapısı
 
 ### Proje Klasör Yapısı 
+.
+├── public/ # Statik dosyalar
+├── src/ # React kaynak dosyaları
+│   ├── assets/
+│   │   └── loading.gif
+│   ├── components/ # React bileşenleri
+│   │   └── Navbar.jsx
+│   ├── pages/ # Sayfa bileşenleri
+│   │   ├── AdminDashboardPage.jsx
+│   │   ├── CreateRequestPage.jsx
+│   │   ├── DashboardPage.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── MyRequestsPage.jsx
+│   │   ├── RegisterPage.jsx
+│   │   ├── RequestManagementPage.jsx
+│   │   └── UserManagementPage.jsx
+│   ├── App.jsx # Ana uygulama bileşeni
+│   ├── index.css # Global stiller
+│   └── main.jsx # Uygulama giriş noktası
+├── backend_laravel/ # Laravel Backend
+│   ├── app/
+│   │   ├── Http/
+│   │   │   ├── Controllers/ # API kontrolcüleri
+│   │   │   │   ├── AdliyeController.php
+│   │   │   │   ├── AdminController.php
+│   │   │   │   ├── AuthController.php
+│   │   │   │   └── TransferRequestController.php
+│   │   │   └── Kernel.php
+│   │   └── Models/ # Veri modelleri
+│   │       ├── Adliye.php
+│   │       ├── TransferRequest.php
+│   │       └── User.php
+│   ├── database/
+│   │   ├── migrations/ # Veritabanı şemaları
+│   │   └── seeders/ # Başlangıç verileri
+│   ├── routes/
+│   │   └── api.php # API rotaları
+│   ├── storage/ # Dosya depolama
+│   └── .env.example # Ortam değişkenleri örneği
+├── backend_aspnet/ # ASP.NET Core Backend
+│   ├── Controllers/ # API kontrolcüleri
+│   │   ├── AdliyeController.cs
+│   │   ├── AdminController.cs
+│   │   ├── AuthController.cs
+│   │   └── TransferRequestController.cs
+│   ├── Data/ # Veritabanı bağlamı
+│   │   └── ApplicationDbContext.cs
+│   ├── Models/ # Veri modelleri
+│   │   ├── Adliye.cs
+│   │   ├── TransferRequest.cs
+│   │   └── User.cs
+│   ├── Services/ # İş mantığı servisleri
+│   │   └── AdminCheckService.cs
+│   ├── appsettings.json # Uygulama ayarları
+│   ├── Program.cs # Uygulama giriş noktası
+│   └── TayinAspApi.csproj # Proje dosyası
+└── package.json # Node.js bağımlılıkları
+
+
+### Teknoloji Yığını
+
+#### Frontend
+
+* ✓ React.js 18+
+* ✓ React Router
+* ✓ Axios (HTTP Client)
+* ✓ Modern CSS3
+
+#### Backend (Laravel)
+
+* ✓ PHP 8.1+
+* ✓ Laravel 10+
+* ✓ Laravel Sanctum
+* ✓ Eloquent ORM
+
+#### Backend (ASP.NET Core)
+
+* ✓ .NET 8
+* ✓ ASP.NET Core Web API
+* ✓ Entity Framework Core
+* ✓ JWT Authentication
+
+#### Veritabanı
+
+* ✓ MySQL
+* ✓ PostgreSQL
+* ✓ SQLite
+* ✓ SQL Server
+
+### Güvenlik Özellikleri
+
+#### Kimlik Doğrulama ve Yetkilendirme
+
+* **JWT Token Tabanlı Kimlik Doğrulama**: Güvenli ve stateless authentication
+* **Sicil Numarası Bazlı Giriş**: Kurumsal kimlik doğrulama sistemi
+* **Rol Tabanlı Yetkilendirme**: Kullanıcı ve admin rolleri
+* **Şifre Hashleme**: bcrypt algoritması ile güvenli şifre saklama
+* **CORS Koruması**: Cross-Origin Resource Sharing güvenlik politikaları
+* **Rate Limiting**: API endpoint'leri için istek sınırlaması
