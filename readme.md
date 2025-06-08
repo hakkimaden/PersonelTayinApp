@@ -35,25 +35,36 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 **Önemli Not**: Her iki backend seçeneği de aynı işlevselliği sunar. Sadece birini seçip kurmanız yeterlidir. Her iki backend de port 8000 üzerinden çalışacak şekilde yapılandırılmalıdır.
 
+**Veritabanı Notu**: Laravel ve ASP.NET Core backend'leri farklı veritabanı yapıları kullandığından, her biri için ayrı veritabanı oluşturulmalıdır. Aynı veritabanını paylaşamazlar.
+
 ### Frontend (React.js) Kurulumu
 
-1.  **Node.js ve npm Kurulumu**
-    Bilgisayarınızda Node.js ve npm yüklü olduğundan emin olun.
+1.  **Gereksinimler**
+    * Node.js 18+ ve npm 9+
+    * Git (opsiyonel)
+
+2.  **Proje Klonlama ve Dizine Geçiş**
     ```bash
-    npm --version
-    node --version
+    git clone <proje-url>
+    cd PersonelTayinApp/frontend
     ```
-2.  **Proje Dizinine Geçiş**
-    ```bash
-    cd path/to/your/project
-    ```
+
 3.  **Bağımlılıkları Yükleme**
     ```bash
     npm install
-    # veya
-    yarn install
     ```
-4.  **Geliştirme Sunucusunu Başlatma**
+
+4.  **Ortam Değişkenlerini Yapılandırma**
+    * `.env` dosyasını oluşturun:
+    ```bash
+    cp .env.example .env
+    ```
+    * Backend URL'ini yapılandırın (tercih ettiğiniz backend'e göre):
+    ```
+    REACT_APP_API_URL=http://localhost:8000/api
+    ```
+
+5.  **Geliştirme Sunucusunu Başlatma**
     ```bash
     npm start
     ```
@@ -63,58 +74,118 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 #### Laravel Backend Kurulumu
 
-1.  **PHP ve Composer**
+1.  **Sistem Gereksinimleri**
+    * PHP 8.1+
+    * Composer 2+
+    * MySQL 8+ veya PostgreSQL 13+ (tercih edilen)
+
+2.  **Proje Dizinine Geçiş**
     ```bash
-    php --version
-    composer --version
+    cd PersonelTayinApp/laravel
     ```
-2.  **Ortam Yapılandırması**
+
+3.  **Composer Bağımlılıklarını Yükleme**
+    ```bash
+    composer install
+    ```
+
+4.  **Ortam Değişkenlerini Yapılandırma**
     ```bash
     cp .env.example .env
     php artisan key:generate
     ```
-3.  **Bağımlılıklar**
-    ```bash
-    composer install
+    
+5.  **Veritabanı Yapılandırma**
+    * `.env` dosyasında veritabanı bilgilerini düzenleyin:
     ```
-4.  **Veritabanı**
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=tayin_app_laravel
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
+    * Veritabanını oluşturun:
+    ```bash
+    mysql -u root -p -e "CREATE DATABASE tayin_app_laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    ```
+    * Migrasyon ve seeder'ları çalıştırın:
     ```bash
     php artisan migrate:fresh --seed
     ```
-5.  **Sunucu Başlatma**
+
+6.  **Storage Dizini İzinlerini Ayarlama**
+    ```bash
+    php artisan storage:link
+    chmod -R 775 storage bootstrap/cache
+    ```
+
+7.  **Sunucuyu Başlatma**
     ```bash
     php artisan serve --port=8000
     ```
 
 #### ASP.NET Core Backend Kurulumu
 
-1.  **.NET SDK**
+1.  **Sistem Gereksinimleri**
+    * .NET 8 SDK
+    * SQL Server 2019+ veya PostgreSQL 13+ (tercih edilen)
+    * Visual Studio 2022 (opsiyonel)
+
+2.  **Proje Dizinine Geçiş**
     ```bash
-    dotnet --version
+    cd PersonelTayinApp/asp
     ```
-2.  **Paketleri Geri Yükleme**
-    ```bash
-    dotnet restore
-    ```
-3.  **EF Tools**
+
+3.  **.NET Araçlarını ve Bağımlılıkları Yükleme**
     ```bash
     dotnet tool install --global dotnet-ef
+    dotnet restore
     ```
-4.  **Veritabanı**
+
+4.  **Veritabanı Yapılandırma**
+    * `appsettings.json` dosyasında veritabanı bağlantı dizesini düzenleyin:
+    ```json
+    {
+      "ConnectionStrings": {
+        "DefaultConnection": "Server=localhost;Database=tayin_app_aspnet;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+      }
+    }
+    ```
+    * Veritabanını oluşturun:
     ```bash
     dotnet ef database update
     ```
-5.  **Sunucu Başlatma**
+
+5.  **Sunucuyu Başlatma**
     ```bash
     dotnet run --urls "http://localhost:8000"
     ```
 
 ### Kurulum Sonrası Test
 
-Kurulum tamamlandıktan sonra aşağıdaki bilgilerle sisteme giriş yapabilirsiniz:
+Kurulum tamamlandıktan sonra aşağıdaki adımları izleyerek test edebilirsiniz:
 
-* **Sicil Numarası**: 221694
-* **Şifre**: 221694
+1. Frontend uygulamasını `http://localhost:3000` adresinde açın
+2. Aşağıdaki test kullanıcısı ile giriş yapın:
+   * **Sicil Numarası**: 221694
+   * **Şifre**: 221694
+3. Başarılı giriş sonrası dashboard sayfasına yönlendirileceksiniz
+
+### Olası Sorunlar ve Çözümleri
+
+1. **CORS Hatası**
+   * Backend'in CORS ayarlarının doğru yapılandırıldığından emin olun
+   * Frontend `.env` dosyasında API URL'inin doğru olduğunu kontrol edin
+
+2. **Veritabanı Bağlantı Hatası**
+   * Veritabanı servisinin çalıştığından emin olun
+   * Bağlantı bilgilerinin doğru olduğunu kontrol edin
+   * Kullanıcının yeterli yetkiye sahip olduğundan emin olun
+
+3. **Port Çakışması**
+   * 8000 portunda çalışan başka bir uygulama varsa, kapatın veya portu değiştirin
+   * 3000 portunda çalışan başka bir uygulama varsa, React otomatik olarak farklı bir port önerecektir
 
 ---
 

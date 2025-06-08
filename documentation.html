@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adalet Bakanlığı - Personel Tayin Talep Sistemi Dokümantasyonu</title>
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts for official look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Ionicons for UI elements -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        /* Define custom fonts and colors using Tailwind's theme extension */
+        
+        tailwind.config= {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['Merriweather', 'serif'], 'sans': ['Open Sans', 'sans-serif'],
+                    }
+                    ,
+                    colors: {
+                        'adalet-navy': '#0a2463', 'adalet-burgundy': '#981b1b', 'adalet-gold': '#c9b079',
+                    }
+                }
+            }
+        }
+        /* Print-specific styles */
+        
+        @media print {
+            #header-actions,
+            #sidebar,
+            #breadcrumb,
+            #footer-actions,
+            #doc-classification-header {
+                display: none;
+            }
+            main {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+            }
+            body {
+                font-size: 12pt;
+                background-color: #fff;
+            }
+            h1,
+            h2,
+            h3 {
+                page-break-after: avoid;
+            }
+            section {
+                margin-top: 1.5rem;
+            }
+            a {
+                text-decoration: none;
+                color: #000;
+            }
+            a[href]:after {
+                content: " (" attr(href) ")";
+                font-size: 0.8em;
+                color: #555;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        /* Custom styles for code blocks and cards */
+        
+        .code-block {
+            background-color: #1E293B;
+            /* slate-800 */
+            color: #E2E8F0;
+            /* slate-200 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        
+        .info-box {
+            border-left-width: 4px;
+            padding: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .card-feature {
+            background-color: #f8fafc;
+            /* slate-50 */
+            border: 1px solid #e2e8f0;
+            /* slate-200 */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card-feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tree-view {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            font-size: 0.85rem;
+        }
+        
+        .tree-view .comment {
+            color: #64748b;
+            /* slate-500 */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header Section -->
+        <header class="bg-white p-6 rounded-t-lg shadow-md border-b-4 border-adalet-navy flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <svg class="h-16 w-16 text-adalet-navy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 9l4 2.18v6.32L12 22l7-4.5V11.18L23 9l-5-2.5V9l-6 3-6-3V6.5L12 4l6 3v.5L12 10 6 7l6-3 6 3-1.5 1-4.5-2.25V4.5L12 2zM6.5 11.75L12 14.5l5.5-2.75V17L12 19.5 6.5 17v-5.25z"/></svg>
+                <div>
+                    <h1 class="font-serif text-2xl md:text-3xl font-bold text-adalet-navy">Adliye Tayin Talep Sistemi</h1>
+                    <p class="text-sm text-gray-600">Kurulum ve Kullanım Dokümantasyonu</p>
+                </div>
+            </div>
+            <div id="header-actions" class="flex items-center space-x-6 mt-4 md:mt-0">
+                <button onclick="window.print()" class="bg-adalet-navy text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-opacity-90 flex items-center space-x-2">
+                    <ion-icon name="print-outline"></ion-icon>
+                    <span>Yazdır / PDF</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Wrapper -->
+        <div class="flex flex-col md:flex-row gap-8 mt-1">
+
+            <!-- Sidebar Navigation -->
+            <aside id="sidebar" class="w-full md:w-1/4 lg:w-1/5 no-print">
+                <div class="bg-white p-6 rounded-b-lg md:rounded-lg shadow-md sticky top-8">
+                    <h3 class="font-serif text-lg font-bold text-adalet-navy mb-4 border-b pb-2">Doküman İçeriği</h3>
+                    <nav class="space-y-2 text-sm">
+                        <a href="#hizli-baslangic" class="block font-semibold text-gray-700 hover:text-adalet-burgundy">Hızlı Başlangıç</a>
+                        <a href="#kurulum" class="block font-semibold text-gray-700 hover:text-adalet-burgundy">Kurulum</a>
+                        <a href="#api-dokumantasyonu" class="block font-semibold text-gray-700 hover:text-adalet-burgundy">API Dokümantasyonu</a>
+                        <a href="#proje-yapisi" class="block font-semibold text-gray-700 hover:text-adalet-burgundy">Proje Yapısı</a>
+                        <a href="#teknoloji-yigini" class="block font-semibold text-gray-700 hover:text-adalet-burgundy">Teknoloji Yığını</a>
+                        <a href="#guvenlik" class="block font-semibold text-gray-700 hover:text-adalet-burgundy">Güvenlik</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="w-full md:w-3/4 lg:w-4/5 bg-white p-6 md:p-8 rounded-b-lg md:rounded-lg shadow-md">
+
+                <section id="hizli-baslangic">
+                    <h2 class="font-serif text-2xl font-bold text-adalet-navy border-b-2 border-adalet-burgundy pb-2 mb-4">Hızlı Başlangıç</h2>
+                    <p class="mb-6 text-gray-700">Bu sistem, adliye personelinin tayin taleplerini dijital ortamda yönetmelerine olanak sağlayan kurumsal bir web uygulamasıdır. Kullanıcılar tayin taleplerini oluşturabilir, mevcut taleplerini görüntüleyebilir ve yönetebilirler.</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="info-box border-blue-500 bg-blue-50">
+                            <h4 class="font-bold text-blue-800">Sistem Mimarisi</h4>
+                            <p class="text-sm text-blue-700">React.js Frontend &harr; REST API &harr; Veritabanı</p>
+                        </div>
+                        <div class="info-box border-green-500 bg-green-50">
+                            <h4 class="font-bold text-green-800">Test Kullanıcı Bilgileri</h4>
+                            <p class="text-sm text-green-700"><strong>Sicil:</strong> 221694 / <strong>Şifre:</strong> 221694</p>
+                        </div>
+                    </div>
+
+                    <h3 class="font-serif text-xl font-semibold text-gray-800 mb-4">Temel Özellikler</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="card-feature text-center">
+                            <ion-icon name="people-circle-outline" class="text-4xl text-adalet-navy mx-auto"></ion-icon>
+                            <p class="mt-2 font-semibold">Kullanıcı Yönetimi</p>
+                        </div>
+                        <div class="card-feature text-center">
+                            <ion-icon name="document-text-outline" class="text-4xl text-adalet-navy mx-auto"></ion-icon>
+                            <p class="mt-2 font-semibold">Tayin Talepleri</p>
+                        </div>
+                        <div class="card-feature text-center">
+                            <ion-icon name="shield-checkmark-outline" class="text-4xl text-adalet-navy mx-auto"></ion-icon>
+                            <p class="mt-2 font-semibold">Yönetici Paneli</p>
+                        </div>
+                        <div class="card-feature text-center">
+                            <ion-icon name="server-outline" class="text-4xl text-adalet-navy mx-auto"></ion-icon>
+                            <p class="mt-2 font-semibold">Adliye Veritabanı</p>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-12">
+
+                <section id="kurulum">
+                    <h2 class="font-serif text-2xl font-bold text-adalet-navy border-b-2 border-adalet-burgundy pb-2 mb-4">Kurulum</h2>
+                    <div class="info-box border-yellow-500 bg-yellow-50 mb-6">
+                        <h4 class="font-bold text-yellow-800">Önemli Notlar</h4>
+                        <ul class="list-disc list-inside text-sm text-yellow-700 mt-2">
+                            <li>Bu proje, hem <b>Laravel (PHP)</b> hem de <b>ASP.NET Core</b> backend seçenekleri sunar.</li>
+                            <li> Her iki backend de, aynı frontend ile sorunsuz bir şekilde çalışacak şekilde tasarlanmıştır. </li>
+                            <li>Her backend kendi veritabanı yapısını kullandığından, her biri için ayrı veritabanı oluşturulmalıdır.</li>
+                            <li>Backend sunucusunun `http://localhost:8000` adresinde çalıştığından emin olun.</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-8">
+                        <!-- Frontend Kurulumu -->
+                        <div class="border border-blue-200 bg-blue-50/50 p-6 rounded-lg">
+                            <h3 class="font-serif text-xl font-bold text-blue-800 mb-4">Frontend (React.js) Kurulumu</h3>
+                            <ol class="list-decimal list-inside space-y-4">
+                                <li><strong>Proje Dosyalarını Edinin ve Bağımlılıkları Yükleyin:</strong>
+                                    <pre class="code-block mt-2"><code>git clone &lt;proje-url&gt;
+cd PersonelTayinApp/frontend
+npm install</code></pre>
+                                </li>
+                                <li><strong>Ortam Değişkenlerini Yapılandırın:</strong> `.env` dosyası oluşturun ve `REACT_APP_API_URL`'i ayarlayın.
+                                    <pre class="code-block mt-2"><code>cp .env.example .env
+# .env dosyasını düzenleyin: REACT_APP_API_URL=http://localhost:8000/api</code></pre>
+                                </li>
+                                <li><strong>Geliştirme Sunucusunu Başlatın:</strong>
+                                    <pre class="code-block mt-2"><code>npm start</code></pre>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <!-- Backend Kurulumları -->
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Laravel Backend -->
+                            <div class="border border-orange-200 bg-orange-50/50 p-6 rounded-lg">
+                                <h4 class="font-serif text-xl font-bold text-orange-800 mb-4">Backend (Laravel)</h4>
+                                <ol class="list-decimal list-inside space-y-3 text-sm">
+                                    <li><strong>Composer Bağımlılıkları:</strong><br><code class="text-sm">composer install</code></li>
+                                    <li><strong>Ortam Dosyası:</strong><br><code class="text-sm">cp .env.example .env && php artisan key:generate</code></li>
+                                    <li><strong>Veritabanı Kurulumu:</strong><br><code class="text-sm">.env</code> dosyasını düzenleyip, <br> <code class="text-sm">php artisan migrate:fresh --seed</code> komutunu çalıştırın.</li>
+                                    <li><strong>Sunucuyu Başlatma:</strong><br><code class="text-sm">php artisan serve --port=8000</code></li>
+                                </ol>
+                            </div>
+                            <!-- ASP.NET Core Backend -->
+                            <div class="border border-purple-200 bg-purple-50/50 p-6 rounded-lg">
+                                <h4 class="font-serif text-xl font-bold text-purple-800 mb-4">Backend (ASP.NET)</h4>
+                                <ol class="list-decimal list-inside space-y-3 text-sm">
+                                    <li><strong>.NET Bağımlılıkları:</strong><br><code class="text-sm">dotnet restore</code></li>
+                                    <li><strong>Veritabanı Kurulumu:</strong><br><code class="text-sm">appsettings.json</code> dosyasını düzenleyip, <br> <code class="text-sm">dotnet ef database update</code> komutunu çalıştırın.</li>
+                                    <li><strong>Sunucuyu Başlatma:</strong><br><code class="text-sm">dotnet run --urls "http://localhost:8000"</code></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-12">
+
+                <section id="api-dokumantasyonu">
+                    <h2 class="font-serif text-2xl font-bold text-adalet-navy border-b-2 border-adalet-burgundy pb-2 mb-4">API Dokümantasyonu</h2>
+                    <p class="mb-4 text-gray-700">Sistem, RESTful API prensiplerine uygun olarak tasarlanmış endpoint'ler sunar.</p>
+
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Public Rotalar (Üye Girişi Gerekmez)</h4>
+                            <pre class="code-block text-sm"><code><strong class="text-green-400">POST</strong>   /api/register
+<strong class="text-green-400">POST</strong>   /api/login
+<strong class="text-blue-400">GET</strong>    /api/adliyeler
+<strong class="text-blue-400">GET</strong>    /api/adliyeler/{adliye}</code></pre>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Güvenli Rotalar (Üye Girişi Gerekli)</h4>
+                            <pre class="code-block text-sm"><code><span class="comment"># Kullanıcı Rotaları</span>
+<strong class="text-green-400">POST</strong>   /api/logout
+<strong class="text-blue-400">GET</strong>    /api/user
+<strong class="text-green-400">POST</strong>   /api/transfer-requests
+<strong class="text-blue-400">GET</strong>    /api/transfer-requests
+<strong class="text-blue-400">GET</strong>    /api/transfer-requests/{transferRequest}
+<strong class="text-red-400">DELETE</strong> /api/transfer-requests/{transferRequest}
+
+<span class="comment"># Admin Rotaları (Admin Yetkisi Gerekli)</span>
+<strong class="text-blue-400">GET</strong>    /api/admin/users
+<strong class="text-blue-400">GET</strong>    /api/admin/requests
+<strong class="text-yellow-400">PUT</strong>    /api/admin/requests/{id}/status</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <hr class="my-12">
+
+                <section id="proje-yapisi">
+                    <h2 class="font-serif text-2xl font-bold text-adalet-navy border-b-2 border-adalet-burgundy pb-2 mb-4">Proje Yapısı</h2>
+                    <pre class="code-block tree-view"><code>.
+├── asp/     <span class="comment"># ASP.NET Core Backend</span>
+│   ├── Controllers/
+│   ├── Data/
+│   └── Models/
+├── laravels/    <span class="comment"># Laravel Backend</span>
+│   ├── app/
+│   │   ├── Http/
+│   │   │   └── Controllers/
+│   │   └── Models/
+│   ├── database/
+│   │   ├── migrations/
+│   │   └── seeders/
+│   └── routes/
+├── frontend/           <span class="comment"># React.js Frontend</span>
+│   ├── public/
+│   └── src/
+│       ├── assets/
+│       ├── components/
+│       └── pages/
+└── package.json</code></pre>
+                </section>
+
+                <hr class="my-12">
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <section id="teknoloji-yigini">
+                        <h2 class="font-serif text-xl font-bold text-adalet-navy pb-2 mb-4">Teknoloji Yığını</h2>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center">
+                                <ion-icon name="logo-react" class="text-xl text-blue-500 mr-2"></ion-icon>Frontend: <strong>React.js</strong></li>
+                            <li class="flex items-center">
+                                <ion-icon name="logo-laravel" class="text-xl text-orange-500 mr-2"></ion-icon>Backend: <strong>Laravel (PHP)</strong></li>
+                            <li class="flex items-center">
+                                <ion-icon name="code-slash-outline" class="text-xl text-purple-500 mr-2"></ion-icon>Backend: <strong>ASP.NET Core</strong></li>
+                            <li class="flex items-center">
+                                <ion-icon name="server-outline" class="text-xl text-gray-500 mr-2"></ion-icon>Veritabanı: <strong>MySQL, PostgreSQL, SQL Server</strong></li>
+                        </ul>
+                    </section>
+
+                    <section id="guvenlik">
+                        <h2 class="font-serif text-xl font-bold text-adalet-navy pb-2 mb-4">Güvenlik</h2>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-center">
+                                <ion-icon name="key-outline" class="text-green-600 mr-2"></ion-icon>JWT Token Tabanlı Kimlik Doğrulama</li>
+                            <li class="flex items-center">
+                                <ion-icon name="finger-print-outline" class="text-green-600 mr-2"></ion-icon>Sicil Numarası Bazlı Giriş</li>
+                            <li class="flex items-center">
+                                <ion-icon name="shield-half-outline" class="text-green-600 mr-2"></ion-icon>Rol Tabanlı Yetkilendirme (RBAC)</li>
+                            <li class="flex items-center">
+                                <ion-icon name="lock-closed-outline" class="text-green-600 mr-2"></ion-icon>bcrypt ile Şifre Hashleme</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <!-- Footer Section -->
+                <footer class="border-t-2 pt-6 mt-12 text-xs text-gray-500">
+                    <p class="text-center">© 2025 T.C. Adalet Bakanlığı. Tüm hakları saklıdır.</p>
+                </footer>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
