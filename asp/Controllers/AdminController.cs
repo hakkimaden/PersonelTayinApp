@@ -27,6 +27,30 @@ namespace TayinAspApi.Controllers
             _adminCheckService = adminCheckService;
         }
 
+        public class AppLogDto
+        {
+            [JsonPropertyName("id")]
+            public int Id { get; set; }
+
+            [JsonPropertyName("timestamp")]
+            public DateTime Timestamp { get; set; }
+
+            [JsonPropertyName("log_level")]
+            public string LogLevel { get; set; } = null!;
+
+            [JsonPropertyName("message")]
+            public string Message { get; set; } = null!;
+
+            [JsonPropertyName("username")]
+            public string? Username { get; set; }
+
+            [JsonPropertyName("action")]
+            public string? Action { get; set; }
+
+            [JsonPropertyName("details")]
+            public string? Details { get; set; }
+        }
+
         // --- DTO'lar (Frontend'in Beklediği Formatlar İçin) ---
 
         // Frontend'in UserManagementPage.jsx beklentilerine göre güncellenen UserResponseDto
@@ -143,7 +167,7 @@ namespace TayinAspApi.Controllers
         {
             if (!await _adminCheckService.IsUserAdmin(User))
             {
-                 return Forbid("Bu kaynağa erişim yetkiniz yok.");
+                return Forbid("Bu kaynağa erişim yetkiniz yok.");
             }
 
             var requests = await _context.TransferRequests
@@ -247,5 +271,74 @@ namespace TayinAspApi.Controllers
 
             return Ok(new { message = "Talep durumu başarıyla güncellendi.", request = transferRequest });
         }
+
+        // --- Yeni Eklenecek Log Endpoint'i ---
+        [HttpGet("loglar")]
+        [Authorize(Roles = "Admin")] // Bu endpoint'in sadece adminler tarafından erişilebilir olduğundan emin olalım
+        public async Task<ActionResult<IEnumerable<AppLogDto>>> GetLogs(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20,
+            [FromQuery] string? logLevel = null,
+            [FromQuery] string? username = null,
+            [FromQuery] string? action = null,
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null)
+        {
+            if (!await _adminCheckService.IsUserAdmin(User))
+            {
+                return Forbid("Bu kaynağa erişim yetkiniz yok.");
+            }
+
+            IQueryable<AppLog> query = _context.AppLogs;
+
+            // Filtreleme
+            if (!string.IsNullOrEmpty(logLevel))
+            {
+                query = query.Where(l => l.LogLevel == logLevel);
+            }
+            if (!string.IsNullOrEmpty(username))
+            {
+                query = query.Where(l => l.Username != null && l.Username.Contains(username));
+            }
+            if (!string.IsNullOrEmpty(action))
+            {
+                query = query.Where(l => l.Action != null && l.Action.Contains(action));
+            }
+            if (startDate.HasValue)
+            {
+                query = query.Where(l => l.Timestamp >= startDate.Value);
+            }
+            if (endDate.HasValue)
+            {
+                // endDate'i günün sonuna kadar dahil etmek için
+                query = query.Where(l => l.Timestamp <= endDate.Value.AddDays(1).AddTicks(-1));
+            }
+
+            // Toplam kayıt sayısını al (pagination için)
+            var totalCount = await query.CountAsync();
+
+            // Sıralama ve sayfalama
+            var logs = await query.OrderByDescending(l => l.Timestamp) // En son loglar en başta
+                                  .Skip((page - 1) * pageSize)
+                                  .Take(pageSize)
+                                  .ToListAsync();
+
+            var logDtos = logs.Select(l => new AppLogDto
+            {
+                Id = l.Id,
+                Timestamp = l.Timestamp,
+                LogLevel = l.LogLevel,
+                Message = l.Message,
+                Username = l.Username,
+                Action = l.Action,
+                Details = l.Details
+            }).ToList();
+
+            // Toplam kayıt sayısı ile birlikte logları döndür
+            Response.Headers.Append("X-Total-Count", totalCount.ToString());
+            return Ok(logDtos);
+        }
+
+
     }
 }

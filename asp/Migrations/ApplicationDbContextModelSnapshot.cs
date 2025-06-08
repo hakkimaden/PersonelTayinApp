@@ -49,17 +49,21 @@ namespace _.Migrations
                         .HasColumnType("character varying(2048)");
 
                     b.Property<int?>("KresVarMi")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "cocuk_kresi_var_mi");
 
                     b.Property<int?>("LojmanVarMi")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "lojman_var_mi");
 
                     b.Property<int?>("PersonelSayisi")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "personel_sayisi");
 
                     b.Property<string>("ResimUrl")
                         .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
+                        .HasColumnType("character varying(2048)")
+                        .HasAnnotation("Relational:JsonPropertyName", "resim_url");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -67,11 +71,48 @@ namespace _.Migrations
                         .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("YapimYili")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Relational:JsonPropertyName", "yapim_yili");
 
                     b.HasKey("Id");
 
                     b.ToTable("Adliyes");
+                });
+
+            modelBuilder.Entity("TayinAspApi.Models.AppLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LogLevel")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppLogs");
                 });
 
             modelBuilder.Entity("TayinAspApi.Models.TransferRequest", b =>

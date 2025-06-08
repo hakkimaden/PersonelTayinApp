@@ -14,6 +14,7 @@ namespace TayinAspApi.Data
         public DbSet<Adliye> Adliyes { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<TransferRequest> TransferRequests { get; set; } = null!;
+        public DbSet<AppLog> AppLogs { get; set; } // Yeni eklenen AppLog DbSet'i
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

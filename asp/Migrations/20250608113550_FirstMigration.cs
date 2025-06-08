@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace _.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateResponseDtoFields : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,24 @@ namespace _.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Adliyes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LogLevel = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Message = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    Action = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    Details = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppLogs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,6 +136,9 @@ namespace _.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AppLogs");
+
             migrationBuilder.DropTable(
                 name: "TransferRequests");
 
