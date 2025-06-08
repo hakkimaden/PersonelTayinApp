@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdliyeController;
 use App\Http\Controllers\TransferRequestController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +39,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/transfer-requests/{transferRequest}', [TransferRequestController::class, 'destroy']);
 
 
+    // Admin Rotaları
     Route::get('/admin/users', [AdminController::class, 'getUsers']);
     Route::get('/admin/requests', [AdminController::class, 'getRequests']);
     Route::put('/admin/requests/{id}/status', [AdminController::class, 'updateRequestStatus']); // New route for status update
+
+    // *** BURADAN BAŞLAYARAK LOGLAR İÇİN YENİ ROTA EKLEMESİ ***
+    // Logları almak için Admin yetkisi gerektiren rota
+    Route::get('/admin/loglar', [LogController::class, 'index']); // LogController'daki 'index' metodunu çağırır
+    // *** ROTA EKLEMESİ BURADA BİTİYOR ***
 
     // Mevcut kullanıcı bilgilerini döndürür
     Route::get('/user', function (Request $request) {
@@ -49,11 +56,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
-
-
-
-
-
-
 
 });

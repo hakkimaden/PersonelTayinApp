@@ -15,30 +15,32 @@ using Microsoft.EntityFrameworkCore; // Bu zaten olmalıydı
 using Npgsql.EntityFrameworkCore.PostgreSQL; // BU YENİ EKLENECEK SATIR
 using System.Text.Json;
 using Microsoft.Extensions.FileProviders; // Bu using'i ekleyin
+using TayinAspApi.Filters; // Filtrenizi kullanmak için
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<LogActionFilter>(); // Loglama filtremizi global olarak ekliyoruz
+})
+.AddJsonOptions(options =>
+{
+    // Bu ayar, PascalCase olan C# özellik isimlerinin JSON'da camelCase olarak görünmesini sağlar.
+    // Eğer frontend'de 'current_adliye' gibi snake_case isimler bekliyorsanız,
+    // JSON serileştirme davranışını değiştirmelisiniz.
+    // Örneğin:
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // Varsayılan olarak genellikle bu zaten ayarlanmıştır.
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        // Bu ayar, PascalCase olan C# özellik isimlerinin JSON'da camelCase olarak görünmesini sağlar.
-        // Eğer frontend'de 'current_adliye' gibi snake_case isimler bekliyorsanız,
-        // JSON serileştirme davranışını değiştirmelisiniz.
-        // Örneğin:
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // Varsayılan olarak genellikle bu zaten ayarlanmıştır.
-
-        // Eğer tam olarak snake_case istiyorsanız, özel bir çözüm gerekebilir
-        // veya Newtonsoft.Json kullanarak ayarları değiştirebilirsiniz:
-        // .AddNewtonsoftJson(options =>
-        // {
-        //     options.SerializerSettings.ContractResolver = new SnakeCasePropertyNamesContractResolver();
-        // });
-        // Bu son durum için, Newtonsoft.Json paketini kurmanız ve SnakeCasePropertyNamesContractResolver gibi bir ContractResolver oluşturmanız gerekir.
-    });
+    // Eğer tam olarak snake_case istiyorsanız, özel bir çözüm gerekebilir
+    // veya Newtonsoft.Json kullanarak ayarları değiştirebilirsiniz:
+    // .AddNewtonsoftJson(options =>
+    // {
+    //     options.SerializerSettings.ContractResolver = new SnakeCasePropertyNamesContractResolver();
+    // });
+    // Bu son durum için, Newtonsoft.Json paketini kurmanız ve SnakeCasePropertyNamesContractResolver gibi bir ContractResolver oluşturmanız gerekir.
+});
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -72,6 +74,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+// Health Checks servisini ekle
+builder.Services.AddHealthChecks(); // Bu satırı ekleyin
+
+
 // CORS Politikasını Tanımlama
 builder.Services.AddCors(options =>
 {
@@ -91,6 +98,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+
+// LoggingService'i ekle
+builder.Services.AddScoped<ILoggingService, LoggingService>();
+
 
 // AdminCheckService'i ekle
 builder.Services.AddScoped<AdminCheckService>();
@@ -298,5 +310,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/api/health");
 
 app.Run();

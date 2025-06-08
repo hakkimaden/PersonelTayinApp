@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tayin Talep Sistemi Projesi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="60" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        h2 {
+            color: #1e3c72;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin: 40px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #2a5298;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .image-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e8ecf0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .image-container {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .zoom-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .image-container:hover .zoom-icon {
+            opacity: 1;
+        }
+        
+        .image-item p {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        .image-item strong {
+            color: #1e3c72;
+            font-weight: 600;
+        }
+        
+        .description {
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+            border-left: 4px solid #2a5298;
+            border-radius: 8px;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+        
+        .admin-section {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffeaea 100%);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #dc3545;
+            margin-top: 20px;
+        }
+        
+        .admin-section h2 {
+            color: #dc3545;
+            border-bottom-color: #dc3545;
+        }
+        
+        .admin-section h2::after {
+            background: linear-gradient(90deg, #dc3545, #ff6b6b);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        /* Modal Styles */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 95vw;
+            max-height: 95vh;
+            animation: scaleIn 0.3s ease;
+        }
+        
+        .modal-content img {
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            transition: color 0.3s ease;
+        }
+        
+        .close:hover {
+            color: #ccc;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.7);
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            .content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Tayin Talep Sistemi Projesi</h1>
+            <p class="subtitle">Adalet Bakanlığı Personel Tayin Yönetim Platformu</p>
+        </div>
+
+        <div class="content">
+            <div class="description">
+                <p>Bu doküman, Tayin Talep Sistemi projesinin ekran görüntülerini ve ilgili açıklamalarını içermektedir. Proje, kullanıcıların tayin talebi oluşturabildiği, mevcut taleplerini görüntüleyebildiği ve yöneticilerin bu talepleri ve kullanıcıları
+                    yönetebildiği bir platform sunmaktadır. </p>
+            </div>
+
+            <div class="section">
+                <h2>Giriş ve Kayıt Sayfaları</h2>
+                <div class="image-gallery">
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Giris.png')">
+                            <img src="project-images/Giris.png" alt="Giriş Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Giriş Sayfası:</strong> Kullanıcıların sisteme erişim sağlamak için kimlik bilgilerini girdiği ekran.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/KayitOl.png')">
+                            <img src="project-images/KayitOl.png" alt="Kayıt Ol Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Kayıt Ol Sayfası:</strong> Yeni kullanıcıların sisteme kaydolmalarını sağlayan ekran.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Anasayfa ve Adliye Bilgileri</h2>
+                <div class="image-gallery">
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Anasayfa.png')">
+                            <img src="project-images/Anasayfa.png" alt="Anasayfa">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Anasayfa:</strong> Giriş yapan kullanıcının kişisel bilgilerinin gösterildiği alan. Ayrıca, adliyeler hakkında bilgi edinmek için "Adliyeler Hakkında Bilgi" bölümü bulunur. Kullanıcılar adliye arayabilir veya listelenen
+                            adliyelerdeki bilgi (info) ikonuna tıklayarak detaylı bilgilere ulaşabilir.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Anasayfa2.png')">
+                            <img src="project-images/Anasayfa2.png" alt="Anasayfa Alt Kısım">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Anasayfa Alt Kısım:</strong> Anasayfanın devamı ve ek özelliklerin yer aldığı bölüm.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Anasayfa3.png')">
+                            <img src="project-images/Anasayfa3.png" alt="Detaylı Adliye Bilgileri">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Detaylı Adliye Bilgileri:</strong> Seçilen adliyenin personel sayısı, yapım yılı, lojman durumu ve kreş gibi detaylı bilgilerinin gösterildiği ekran.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Tayin Talebi Oluşturma ve Takibi</h2>
+                <div class="image-gallery">
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/TayinTalebiOlustur.png')">
+                            <img src="project-images/TayinTalebiOlustur.png" alt="Tayin Talebi Oluşturma Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Tayin Talebi Oluşturma Sayfası:</strong> Kullanıcıların yeni tayin talebi oluşturabildiği, gerekli bilgileri girdiği ekran.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Taleplerim.png')">
+                            <img src="project-images/Taleplerim.png" alt="Taleplerim Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>Taleplerim Sayfası:</strong> Kullanıcının oluşturduğu tüm tayin taleplerini listeleyebildiği ve durumlarını takip edebildiği ekran.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Yönetim Paneli</h2>
+                <p class="description">Yönetim paneli, sistem yöneticilerinin kullanıcıları ve tayin taleplerini yönetmesini sağlar.</p>
+                <div class="image-gallery">
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Admin_Anasayfa.png')">
+                            <img src="project-images/Admin_Anasayfa.png" alt="Admin Anasayfa">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>[Yönetim Paneli] Sayfası:</strong> Yöneticilerin sistemdeki kullanıcıları ve tayin taleplerini listeleyebildiği, sistem loglarını görebildiği ekran.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Admin_KullaniciYonetimi.png')">
+                            <img src="project-images/Admin_KullaniciYonetimi.png" alt="Kullanıcı Yönetimi Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>[Yönetim Paneli] Kullanıcı Yönetimi Sayfası:</strong> Yöneticilerin sistemdeki kullanıcıları listeleyebildiği ekran.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Admin_TalepYonetimi.png')">
+                            <img src="project-images/Admin_TalepYonetimi.png" alt="Talep Yönetimi Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>[Yönetim Paneli] Talep Yönetimi Sayfası:</strong> Yöneticilerin tüm tayin taleplerini görüntüleyebildiği, taleplerin durumlarını güncelleyebildiği ve yönetebildiği ekran.</p>
+                    </div>
+                    <div class="image-item">
+                        <div class="image-container" onclick="openModal('project-images/Admin_Log.png')">
+                            <img src="project-images/Admin_Log.png" alt="Sistem Logları Sayfası">
+                            <div class="zoom-icon">🔍</div>
+                        </div>
+                        <p><strong>[Yönetim Paneli] Sistem Logları:</strong> Sistem üzerinde gerçekleştirilen tüm işlemlerin kayıt altına alındığı ve yöneticilerin sistem aktivitelerini takip edebildiği ekran.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = imageSrc;
+
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
