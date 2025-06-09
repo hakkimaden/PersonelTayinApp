@@ -45,7 +45,7 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 2.  **Proje Klonlama ve Dizine Geçiş**
     ```bash
-    git clone <proje-url>
+    git clone https://github.com/hakkimaden/PersonelTayinApp.git
     cd PersonelTayinApp/frontend
     ```
 
@@ -101,13 +101,13 @@ React.js Frontend <-> REST API <-> Veritabanı
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
     DB_PORT=3306
-    DB_DATABASE=tayin_app_laravel
+    DB_DATABASE=tayin_laravel
     DB_USERNAME=root
-    DB_PASSWORD=
+    DB_PASSWORD=[YourPassword]
     ```
     * Veritabanını oluşturun:
     ```bash
-    mysql -u root -p -e "CREATE DATABASE tayin_app_laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+    mysql -u root -p -e "CREATE DATABASE tayin_laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
     ```
     * Migrasyon ve seeder'ları çalıştırın:
     ```bash
@@ -148,7 +148,7 @@ React.js Frontend <-> REST API <-> Veritabanı
     ```json
     {
       "ConnectionStrings": {
-        "DefaultConnection": "Server=localhost;Database=tayin_app_aspnet;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+        "DefaultConnection": "Host=localhost;Port=5432;Database=tayinasp;Username=postgres;Password=[YourPassword];"
       }
     }
     ```
@@ -269,3 +269,14 @@ Sistem, RESTful API prensiplerine uygun olarak tasarlanmış endpoint'ler sunar:
 * **Şifre Hashleme**: bcrypt algoritması ile güvenli şifre saklama
 * **CORS Koruması**: Cross-Origin Resource Sharing güvenlik politikaları
 * **Rate Limiting**: API endpoint'leri için istek sınırlaması
+
+#### Loglama ve İzlenebilirlik
+
+> Not: Loglama ve izlenebilirlik altyapısı hem Laravel hem de ASP.NET Core backend projelerinde mevcuttur. Her iki sistemde de önemli işlemler, hatalar ve kullanıcı aktiviteleri merkezi olarak kaydedilir ve denetlenebilir.
+
+* **Merkezi Loglama**: Tüm önemli işlemler ve hatalar merkezi olarak kaydedilir.
+* **Kapsamlı İzlenebilirlik**: Kullanıcı ve yönetici işlemleri detaylı şekilde loglanır.
+* **Aksiyon Bazlı Loglama**: API istekleri, kimlik doğrulama, veri güncellemeleri ve yönetici işlemleri ayrı ayrı izlenir.
+* **Log Seviyeleri**: Bilgi, uyarı ve hata seviyelerinde kayıt tutulur.
+* **Gizlilik ve Güvenlik**: Kişisel veriler loglarda maskeleme ile korunur.
+* **Denetim Kolaylığı**: Sistem yöneticileri için denetim ve hata ayıklama süreçlerini kolaylaştırır.

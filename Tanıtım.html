@@ -208,7 +208,7 @@
             font-size: 0.9em;
             color: #6c757d;
         }
-        /* Modal Styles */
+        /* Enhanced Modal Styles */
         
         .modal {
             display: none;
@@ -218,7 +218,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.95);
             animation: fadeIn 0.3s ease;
         }
         
@@ -226,20 +226,23 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 95vw;
-            max-height: 95vh;
+            transform: translate(-50%, -60%);
+            max-width: 90vw;
+            max-height: 70vh;
             animation: scaleIn 0.3s ease;
         }
         
         .modal-content img {
+            width: auto;
             height: auto;
+            max-width: auto;
+            max-height: 90%;
             border-radius: 8px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
         
         .close {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 35px;
             color: #fff;
@@ -247,11 +250,124 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1001;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .close:hover {
-            color: #ccc;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        /* Navigation arrows */
+        
+        .modal-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            font-size: 30px;
+            padding: 20px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            user-select: none;
+        }
+        
+        .modal-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .modal-nav:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .modal-prev {
+            left: 30px;
+        }
+        
+        .modal-next {
+            right: 30px;
+        }
+        /* Image counter */
+        
+        .image-counter {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            z-index: 1001;
+        }
+        /* Thumbnail strip */
+        
+        .thumbnail-strip {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 90vw;
+            overflow-x: auto;
+            z-index: 1001;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .thumbnail:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+        
+        .thumbnail.active {
+            opacity: 1;
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+        /* Custom scrollbar for thumbnails */
+        
+        .thumbnail-strip::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
         
         @keyframes fadeIn {
@@ -265,10 +381,10 @@
         
         @keyframes scaleIn {
             from {
-                transform: translate(-50%, -50%) scale(0.7);
+                transform: translate(-50%, -60%) scale(0.7);
             }
             to {
-                transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -60%) scale(1);
             }
         }
         
@@ -285,6 +401,31 @@
             }
             .content {
                 padding: 30px 20px;
+            }
+            .modal-nav {
+                font-size: 24px;
+                padding: 15px 12px;
+            }
+            .modal-prev {
+                left: 15px;
+            }
+            .modal-next {
+                right: 15px;
+            }
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+            .thumbnail-strip {
+                bottom: 10px;
+                padding: 10px;
+            }
+            .close {
+                top: 15px;
+                right: 20px;
+                font-size: 30px;
+                width: 50px;
+                height: 50px;
             }
         }
     </style>
@@ -307,14 +448,14 @@
                 <h2>Giriş ve Kayıt Sayfaları</h2>
                 <div class="image-gallery">
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Giris.png')">
+                        <div class="image-container" onclick="openModal(0)">
                             <img src="project-images/Giris.png" alt="Giriş Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
                         <p><strong>Giriş Sayfası:</strong> Kullanıcıların sisteme erişim sağlamak için kimlik bilgilerini girdiği ekran.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/KayitOl.png')">
+                        <div class="image-container" onclick="openModal(1)">
                             <img src="project-images/KayitOl.png" alt="Kayıt Ol Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
@@ -327,7 +468,7 @@
                 <h2>Anasayfa ve Adliye Bilgileri</h2>
                 <div class="image-gallery">
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Anasayfa.png')">
+                        <div class="image-container" onclick="openModal(2)">
                             <img src="project-images/Anasayfa.png" alt="Anasayfa">
                             <div class="zoom-icon">🔍</div>
                         </div>
@@ -335,14 +476,14 @@
                             adliyelerdeki bilgi (info) ikonuna tıklayarak detaylı bilgilere ulaşabilir.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Anasayfa2.png')">
+                        <div class="image-container" onclick="openModal(3)">
                             <img src="project-images/Anasayfa2.png" alt="Anasayfa Alt Kısım">
                             <div class="zoom-icon">🔍</div>
                         </div>
                         <p><strong>Anasayfa Alt Kısım:</strong> Anasayfanın devamı ve ek özelliklerin yer aldığı bölüm.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Anasayfa3.png')">
+                        <div class="image-container" onclick="openModal(4)">
                             <img src="project-images/Anasayfa3.png" alt="Detaylı Adliye Bilgileri">
                             <div class="zoom-icon">🔍</div>
                         </div>
@@ -355,14 +496,14 @@
                 <h2>Tayin Talebi Oluşturma ve Takibi</h2>
                 <div class="image-gallery">
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/TayinTalebiOlustur.png')">
+                        <div class="image-container" onclick="openModal(5)">
                             <img src="project-images/TayinTalebiOlustur.png" alt="Tayin Talebi Oluşturma Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
                         <p><strong>Tayin Talebi Oluşturma Sayfası:</strong> Kullanıcıların yeni tayin talebi oluşturabildiği, gerekli bilgileri girdiği ekran.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Taleplerim.png')">
+                        <div class="image-container" onclick="openModal(6)">
                             <img src="project-images/Taleplerim.png" alt="Taleplerim Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
@@ -376,28 +517,28 @@
                 <p class="description">Yönetim paneli, sistem yöneticilerinin kullanıcıları ve tayin taleplerini yönetmesini sağlar.</p>
                 <div class="image-gallery">
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Admin_Anasayfa.png')">
+                        <div class="image-container" onclick="openModal(7)">
                             <img src="project-images/Admin_Anasayfa.png" alt="Admin Anasayfa">
                             <div class="zoom-icon">🔍</div>
                         </div>
                         <p><strong>[Yönetim Paneli] Sayfası:</strong> Yöneticilerin sistemdeki kullanıcıları ve tayin taleplerini listeleyebildiği, sistem loglarını görebildiği ekran.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Admin_KullaniciYonetimi.png')">
+                        <div class="image-container" onclick="openModal(8)">
                             <img src="project-images/Admin_KullaniciYonetimi.png" alt="Kullanıcı Yönetimi Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
                         <p><strong>[Yönetim Paneli] Kullanıcı Yönetimi Sayfası:</strong> Yöneticilerin sistemdeki kullanıcıları listeleyebildiği ekran.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Admin_TalepYonetimi.png')">
+                        <div class="image-container" onclick="openModal(9)">
                             <img src="project-images/Admin_TalepYonetimi.png" alt="Talep Yönetimi Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
                         <p><strong>[Yönetim Paneli] Talep Yönetimi Sayfası:</strong> Yöneticilerin tüm tayin taleplerini görüntüleyebildiği, taleplerin durumlarını güncelleyebildiği ve yönetebildiği ekran.</p>
                     </div>
                     <div class="image-item">
-                        <div class="image-container" onclick="openModal('project-images/Admin_Log.png')">
+                        <div class="image-container" onclick="openModal(10)">
                             <img src="project-images/Admin_Log.png" alt="Sistem Logları Sayfası">
                             <div class="zoom-icon">🔍</div>
                         </div>
@@ -405,24 +546,86 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Enhanced Modal -->
     <div id="imageModal" class="modal">
         <span class="close" onclick="closeModal()">&times;</span>
+        <div class="image-counter" id="imageCounter">1 / 11</div>
+
+        <button class="modal-nav modal-prev" onclick="prevImage()">❮</button>
+        <button class="modal-nav modal-next" onclick="nextImage()">❯</button>
+
         <div class="modal-content">
             <img id="modalImage" src="" alt="">
+        </div>
+
+        <div class="thumbnail-strip" id="thumbnailStrip">
+            <!-- Thumbnails will be generated by JavaScript -->
         </div>
     </div>
 
     <script>
-        function openModal(imageSrc) {
+        // Image data array
+        const images = [{
+            src: 'project-images/Giris.png',
+            alt: 'Giriş Sayfası'
+        }, {
+            src: 'project-images/KayitOl.png',
+            alt: 'Kayıt Ol Sayfası'
+        }, {
+            src: 'project-images/Anasayfa.png',
+            alt: 'Anasayfa'
+        }, {
+            src: 'project-images/Anasayfa2.png',
+            alt: 'Anasayfa Alt Kısım'
+        }, {
+            src: 'project-images/Anasayfa3.png',
+            alt: 'Detaylı Adliye Bilgileri'
+        }, {
+            src: 'project-images/TayinTalebiOlustur.png',
+            alt: 'Tayin Talebi Oluşturma Sayfası'
+        }, {
+            src: 'project-images/Taleplerim.png',
+            alt: 'Taleplerim Sayfası'
+        }, {
+            src: 'project-images/Admin_Anasayfa.png',
+            alt: 'Admin Anasayfa'
+        }, {
+            src: 'project-images/Admin_KullaniciYonetimi.png',
+            alt: 'Kullanıcı Yönetimi Sayfası'
+        }, {
+            src: 'project-images/Admin_TalepYonetimi.png',
+            alt: 'Talep Yönetimi Sayfası'
+        }, {
+            src: 'project-images/Admin_Log.png',
+            alt: 'Sistem Logları Sayfası'
+        }];
+
+        let currentImageIndex = 0;
+
+        function generateThumbnails() {
+            const thumbnailStrip = document.getElementById('thumbnailStrip');
+            thumbnailStrip.innerHTML = '';
+
+            images.forEach((image, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = image.src;
+                thumbnail.alt = image.alt;
+                thumbnail.className = 'thumbnail';
+                thumbnail.onclick = () => showImage(index);
+                thumbnailStrip.appendChild(thumbnail);
+            });
+        }
+
+        function openModal(imageIndex) {
+            currentImageIndex = imageIndex;
             const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
             modal.style.display = 'block';
-            modalImg.src = imageSrc;
+            showImage(imageIndex);
+            generateThumbnails();
+            updateThumbnailHighlight();
 
             // Prevent body scroll when modal is open
             document.body.style.overflow = 'hidden';
@@ -434,7 +637,46 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal when clicking outside the image
+        function showImage(index) {
+            currentImageIndex = index;
+            const modalImg = document.getElementById('modalImage');
+            const counter = document.getElementById('imageCounter');
+
+            modalImg.src = images[index].src;
+            modalImg.alt = images[index].alt;
+            counter.textContent = `${index + 1} / ${images.length}`;
+
+            updateThumbnailHighlight();
+        }
+
+        function updateThumbnailHighlight() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentImageIndex);
+            });
+
+            // Scroll active thumbnail into view
+            const activeThumbnail = thumbnails[currentImageIndex];
+            if (activeThumbnail) {
+                activeThumbnail.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center'
+                });
+            }
+        }
+
+        function nextImage() {
+            const nextIndex = (currentImageIndex + 1) % images.length;
+            showImage(nextIndex);
+        }
+
+        function prevImage() {
+            const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
+            showImage(prevIndex);
+        }
+
+        // Event listeners
         window.onclick = function(event) {
             const modal = document.getElementById('imageModal');
             if (event.target === modal) {
@@ -442,12 +684,52 @@
             }
         }
 
-        // Close modal with Escape key
+        // Keyboard navigation
         document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
+            const modal = document.getElementById('imageModal');
+            if (modal.style.display === 'block') {
+                switch (event.key) {
+                    case 'Escape':
+                        closeModal();
+                        break;
+                    case 'ArrowRight':
+                        nextImage();
+                        break;
+                    case 'ArrowLeft':
+                        prevImage();
+                        break;
+                }
             }
         });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(event) {
+            const modal = document.getElementById('imageModal');
+            if (modal.style.display === 'block') {
+                touchEndX = event.changedTouches[0].screenX;
+                handleSwipe();
+            }
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeDistance = touchEndX - touchStartX;
+
+            if (Math.abs(swipeDistance) > swipeThreshold) {
+                if (swipeDistance > 0) {
+                    prevImage(); // Swipe right - go to previous
+                } else {
+                    nextImage(); // Swipe left - go to next
+                }
+            }
+        }
     </script>
 </body>
 
