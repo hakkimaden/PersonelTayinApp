@@ -159,7 +159,7 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 5.  **Sunucuyu Başlatma**
     ```bash
-    dotnet run --urls "http://localhost:8000"
+    dotnet run
     ```
 
 ### Kurulum Sonrası Test
