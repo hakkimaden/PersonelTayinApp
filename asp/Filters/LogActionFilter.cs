@@ -1,4 +1,3 @@
-// Filters/LogActionFilter.cs
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
@@ -65,7 +64,7 @@ namespace TayinAspApi.Filters
                     }
                     else
                     {
-                         // Diğer durum kodları (örneğin 4xx, 5xx)
+                         // Diğer durum kodları (4xx, 5xx)
                          await _loggingService.LogWarningAsync(
                             message: $"'{controllerName}' kontrolcüsünde '{actionName}' eylemi başarısız oldu veya uyarı döndürdü. (HTTP {objectResult.StatusCode})",
                             username: userName ?? userId ?? "Anonim",

@@ -18,6 +18,4 @@ class Adliye extends Model
         'yapim_yili',
     ];
 
-    // İsteğe bağlı: Her adliyenin hangi şehirde olduğunu belirtmek için
-    // Belki bir 'city_id' alanı ekleyip City modeliyle ilişkilendirebilirsiniz.
 }

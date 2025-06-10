@@ -157,7 +157,6 @@ function AdminDashboardPage() {
       </div>
 
       <div className="container mx-auto px-6 py-8">
-        {/* Management Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -232,7 +231,6 @@ function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Logs Section */}
         <div id="logs-section" className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 overflow-hidden">
           <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-8 py-6">
             <div className="flex items-center justify-between">
@@ -257,7 +255,6 @@ function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Filters */}
           {showFilters && (
             <div className="bg-gray-50/80 backdrop-blur-sm border-b border-gray-200/50 p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
@@ -323,7 +320,6 @@ function AdminDashboardPage() {
             </div>
           )}
 
-          {/* Logs Table */}
           <div className="p-6">
             {loading ? (
               <div className="flex items-center justify-center py-12">
@@ -404,7 +400,6 @@ function AdminDashboardPage() {
               </div>
             )}
 
-            {/* Pagination */}
             {!loading && !error && logs.length > 0 && totalPages > 1 && (
               <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200/50">
                 <div className="text-sm text-gray-600">

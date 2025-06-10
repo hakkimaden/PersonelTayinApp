@@ -27,15 +27,12 @@ class AuthController extends Controller
                     'phone' => [
                         'required',
                         'string',
-                        // Regex for a 10 or 11 digit phone number, optionally starting with 0.
-                        // This matches your frontend's /^\d{10,11}$/ with an optional '0' prefix for Turkish numbers.
                         'regex:/^(0?\d{10})$/',
                     ],
-                    'current_adliye_id' => ['required', 'integer', 'exists:adliyes,id'], // Adliye ID'sinin adliyeler tablosunda bulunduğundan emin olunur
+                    'current_adliye_id' => ['required', 'integer', 'exists:adliyes,id'],
                     'password' => ['required', 'string', 'min:8', 'confirmed'],
                 ],
                 [
-                    // Custom validation messages
                     'name.required' => 'Ad Soyad alanı zorunludur.',
                     'name.string' => 'Ad Soyad metin formatında olmalıdır.',
                     'name.max' => 'Ad Soyad en fazla 255 karakter olabilir.',
@@ -61,32 +58,30 @@ class AuthController extends Controller
                 ]
             );
         } catch (ValidationException $e) {
-            // Get the first specific error message to send to the frontend
             $firstSpecificError = collect($e->errors())->flatten()->first();
 
-            // Handle specific unique errors with a 409 Conflict status
             if (isset($e->errors()['sicil']) && in_array('Bu sicil numarası zaten sisteme kayıtlı.', $e->errors()['sicil'])) {
                 return response()->json([
                     'message' => $firstSpecificError,
                     'errors' => $e->errors()
-                ], 409); // Conflict status code
+                ], 409);
             }
 
             if (isset($e->errors()['phone']) && in_array('Bu telefon numarası zaten sisteme kayıtlı.', $e->errors()['phone'])) {
                 return response()->json([
                     'message' => $firstSpecificError,
                     'errors' => $e->errors()
-                ], 409); // Conflict status code
+                ], 409);
             }
 
-            // For all other validation errors, return 422 Unprocessable Entity
+
             return response()->json([
                 'message' => $firstSpecificError ?: 'Lütfen girdiğiniz bilgileri kontrol edin.',
-                'errors' => $e->errors() // Contains all validation errors for frontend to display
-            ], 422); // Unprocessable Entity status code
+                'errors' => $e->errors()
+            ], 422);
         }
 
-        // Create the user
+
         $user = User::create([
             'name' => $request->name,
             'sicil' => $request->sicil,
@@ -95,7 +90,6 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Attempt to log in the user after registration
         if (Auth::attempt(['sicil' => $request->sicil, 'password' => $request->password])) {
             $loggedInUser = $request->user();
             $token = $loggedInUser->createToken('auth_token')->plainTextToken;
@@ -104,11 +98,10 @@ class AuthController extends Controller
                 'message' => 'Kayıt ve giriş başarıyla tamamlandı.',
                 'access_token' => $token,
                 'token_type' => 'Bearer',
-                'user' => $user->load('mevcutAdliye') // Assuming you have a 'mevcutAdliye' relationship defined in your User model
+                'user' => $user->load('mevcutAdliye')
             ], 201);
         }
 
-        // If automatic login fails, return a success message but prompt manual login
         return response()->json([
             'message' => 'Kayıt başarıyla tamamlandı, ancak otomatik giriş yapılamadı. Lütfen manuel olarak giriş yapın.',
             'user' => [
@@ -142,7 +135,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Doğrulama hatası.',
                 'errors' => $e->errors()
-            ], 422); // Unprocessable Entity
+            ], 422);
         }
 
 
@@ -152,24 +145,22 @@ class AuthController extends Controller
         if (!Auth::attempt($request->only('sicil', 'password'))) {
             return response()->json([
                 'message' => 'Geçersiz kimlik bilgileri (sicil numarası veya şifre yanlış).'
-            ], 401); // Unauthorized (Yetkisiz) HTTP kodu
+            ], 401);
         }
 
-        // Kullanıcıyı al
         $user = $request->user();
 
         // Kullanıcı için yeni bir Sanctum API token'ı oluştur
-        // 'auth_token' token'ın adıdır, istediğiniz bir isim verebilirsiniz.
-        // plainTextToken, token'ın kendisini döndürür.
+        // token adı: 'auth_token' plainTextToken ile token'ın kendisini döndürür.
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // Başarılı giriş yanıtını döndür
         return response()->json([
             'message' => 'Giriş başarılı.',
-            'access_token' => $token, // Oluşturulan API token'ı
-            'token_type' => 'Bearer', // Token tipi (genellikle Bearer)
+            'access_token' => $token,
+            'token_type' => 'Bearer',
             'user' => $user->load('mevcutAdliye')
-        ], 200); // OK (Başarılı) HTTP kodu
+        ], 200);
     }
 
     /**

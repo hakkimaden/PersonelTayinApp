@@ -1,4 +1,3 @@
-// Services/AdminCheckService.cs
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -8,9 +7,7 @@ namespace TayinAspApi.Services
     {
         public Task<bool> IsUserAdmin(ClaimsPrincipal user)
         {
-            // JWT tokenınızda "role" claim'i "Admin" olarak geliyorsa bu doğru çalışır.
-            // Eğer farklı bir claim türü kullanıyorsanız (örn: ClaimTypes.Role),
-            // onu kullanmanız gerekir. Genellikle "role" string'i yeterlidir.
+            // JWT tokenınızda "role" claim'i "Admin" olarak geliyorsa çalışacak.
             return Task.FromResult(user.IsInRole("Admin"));
         }
     }

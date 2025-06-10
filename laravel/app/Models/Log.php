@@ -9,7 +9,6 @@ class Log extends Model
 {
     use HasFactory;
 
-    // Doldurulabilir alanlar
     protected $fillable = [
         'timestamp',
         'log_level',
@@ -19,7 +18,6 @@ class Log extends Model
         'details',
     ];
 
-    // Tarih sütunlarının otomatik olarak Carbon nesnesine dönüştürülmesi için
     protected $casts = [
         'timestamp' => 'datetime',
     ];

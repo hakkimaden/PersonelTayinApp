@@ -1,4 +1,3 @@
-// Data/ApplicationDbContext.cs
 using Microsoft.EntityFrameworkCore;
 using TayinAspApi.Models;
 
@@ -14,7 +13,7 @@ namespace TayinAspApi.Data
         public DbSet<Adliye> Adliyes { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<TransferRequest> TransferRequests { get; set; } = null!;
-        public DbSet<AppLog> AppLogs { get; set; } // Yeni eklenen AppLog DbSet'i
+        public DbSet<AppLog> AppLogs { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,7 +22,7 @@ namespace TayinAspApi.Data
             // Adliye tablosu için CreatedAt ve UpdatedAt varsayılan değerleri
             modelBuilder.Entity<Adliye>()
                 .Property(a => a.CreatedAt)
-                .HasDefaultValueSql("NOW()"); // PostgreSQL'de current timestamp için NOW() kullanın
+                .HasDefaultValueSql("NOW()");
             modelBuilder.Entity<Adliye>()
                 .Property(a => a.UpdatedAt)
                 .HasDefaultValueSql("NOW()");
@@ -44,7 +43,7 @@ namespace TayinAspApi.Data
                 .Property(tr => tr.UpdatedAt)
                 .HasDefaultValueSql("NOW()");
 
-            // Laravel'deki 'sicil' alanının unique olması için
+            // 'sicil' alanının unique olması için
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Sicil)
                 .IsUnique();
@@ -52,22 +51,22 @@ namespace TayinAspApi.Data
             // TransferRequest'teki JSON alanı için
             modelBuilder.Entity<TransferRequest>()
                 .Property(tr => tr.RequestedAdliyeIdsJson)
-                .HasColumnType("jsonb"); // PostgreSQL için JSONB tipi
+                .HasColumnType("jsonb"); 
 
             // Mevcut Adliye ilişkisi
             modelBuilder.Entity<User>()
                 .HasOne(u => u.MevcutAdliye)
-                .WithMany() // Adliye tarafında bir koleksiyon yoksa WithMany() kullanın
+                .WithMany() 
                 .HasForeignKey(u => u.MevcutAdliyeId)
-                .IsRequired(false) // nullable
-                .OnDelete(DeleteBehavior.Restrict); // Laravel'deki gibi kısıtla
+                .IsRequired(false) 
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // TransferRequest - User ilişkisi
             modelBuilder.Entity<TransferRequest>()
                 .HasOne(tr => tr.User)
-                .WithMany() // User tarafında bir koleksiyon yoksa WithMany() kullanın
+                .WithMany() 
                 .HasForeignKey(tr => tr.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Talep silindiğinde kullanıcı kalır
+                .OnDelete(DeleteBehavior.Cascade); 
 
             // TransferRequest - CurrentAdliye ilişkisi
             modelBuilder.Entity<TransferRequest>()

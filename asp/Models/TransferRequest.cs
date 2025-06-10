@@ -1,9 +1,8 @@
-// backend/Models/TransferRequest.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json; // JSON serileştirme/deserileştirme için
+using System.Text.Json; 
 
 namespace TayinAspApi.Models
 {
@@ -24,7 +23,6 @@ namespace TayinAspApi.Models
         [Required(ErrorMessage = "Talep edilen adliyeler zorunludur.")]
         public string RequestedAdliyeIdsJson { get; set; } = null!;
 
-        // JSON serileştirilmiş veriden türetilmiş, EF Core tarafından eşlenmeyecek (NotMapped)
         [NotMapped]
         public List<int> RequestedAdliyeIds
         {
@@ -32,7 +30,6 @@ namespace TayinAspApi.Models
             set => RequestedAdliyeIdsJson = JsonSerializer.Serialize(value);
         }
 
-        // BU KISIM EKLENDİ / KONTROL EDİLDİ
         [NotMapped] // Bu özellik veritabanına eşlenmeyecek
         public Dictionary<int, string> RequestedAdliyeNames { get; set; } = new Dictionary<int, string>(); // DTO'da değil, çıktı/görüntüleme için
 

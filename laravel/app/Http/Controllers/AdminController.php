@@ -12,15 +12,13 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-    // Ortak ID kontrolünü yapacak özel bir metod tanımlayabiliriz
     private function checkAdmin()
     {
-        // Auth::user() ile kimliği doğrulanmış kullanıcıyı alırız
-        // Eğer kullanıcı yoksa veya ID'si 1 değilse false döner
-
-        return response()->json(['message' => 'Yetkisiz erişim.'], 403); // 403 Forbidden
-
-        return Auth::check() && Auth::user()->id === 1;
+        if (Auth::check() && Auth::user()->id === 1) {
+            return true;
+        } else {
+            return response()->json(['message' => 'Yetkisiz erişim.'], 403); // 403 Forbidden
+        }
     }
 
     public function getUsers()
@@ -40,7 +38,7 @@ class AdminController extends Controller
             return response()->json(['message' => 'Yetkisiz erişim.'], 403);
         }
 
-        // currentAdliye ve user ilişkilerini eager load (hevesli yükle) et
+        // currentAdliye ve user ilişkilerini eager load et
         $requests = TransferRequest::with('currentAdliye', 'user')
                                    ->get()
                                    ->map(function ($request) {
@@ -49,15 +47,12 @@ class AdminController extends Controller
                                        return $request;
                                    });
 
-        // dd($requests->toArray()); // Debug için kullanabilirsiniz
-
         return response()->json(['requests' => $requests]);
     }
 
 
     public function updateRequestStatus(Request $request, $id)
     {
-        // Validate the incoming request data
         $validator = Validator::make($request->all(), [
             'status' => ['required', 'string', Rule::in(['pending', 'approved', 'rejected'])],
         ]);
@@ -66,7 +61,7 @@ class AdminController extends Controller
             return response()->json(['message' => 'Geçersiz durum değeri.', 'errors' => $validator->errors()], 400);
         }
 
-        $transferRequest = TransferRequest::find($id); // Ensure you're using the correct Request model
+        $transferRequest = TransferRequest::find($id);
 
         if (!$transferRequest) {
             return response()->json(['message' => 'Talep bulunamadı.'], 404);

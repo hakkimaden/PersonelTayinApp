@@ -1,9 +1,7 @@
-// src/pages/LoginPage.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
-// Receive setIsAdmin as a prop
 function LoginPage({ setIsLoggedIn, setIsAdmin }) { 
   const [sicil, setSicil] = useState(''); 
   const [password, setPassword] = useState('');
@@ -17,7 +15,6 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
     if (localStorage.getItem('access_token')) {
       setIsLoggedIn(true);
       
-      // Also check admin status on component mount if already logged in
       const user = localStorage.getItem('user');
       if (user) {
         try {
@@ -34,7 +31,7 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
       }
       navigate('/dashboard', { replace: true });
     }
-  }, [setIsLoggedIn, setIsAdmin, navigate]); // Add setIsAdmin to dependencies
+  }, [setIsLoggedIn, setIsAdmin, navigate]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,10 +57,8 @@ function LoginPage({ setIsLoggedIn, setIsAdmin }) {
       localStorage.setItem('token_type', response.data.token_type);
       localStorage.setItem('user', JSON.stringify(response.data.user)); 
       
-      // Update login status
       setIsLoggedIn(true);
 
-      // Immediately update admin status based on the received user data
       if (response.data.user && response.data.user.id === 1) {
         setIsAdmin(true);
       } else {

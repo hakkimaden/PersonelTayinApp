@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import loadingGif from '../assets/loading.gif';
-import { FaTrashAlt, FaPlus, FaFileAlt } from 'react-icons/fa'; // FaFileAlt'ı ekledik
+import { FaTrashAlt, FaPlus, FaFileAlt } from 'react-icons/fa'; 
 
 function RequestManagementPage() {
   const [requests, setRequests] = useState([]);
@@ -10,8 +10,7 @@ function RequestManagementPage() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const API_BASE_URL = 'http://127.0.0.1:8000/api'; // Laravel API URL'niz
-  // Dökümanlara erişmek için Laravel'in public/storage yolunu kullanacağız
+  const API_BASE_URL = 'http://127.0.0.1:8000/api'; // Backend API URL
   const DOCUMENT_BASE_URL = 'http://127.0.0.1:8000/';
 
   const fetchRequests = async () => {
@@ -65,7 +64,6 @@ function RequestManagementPage() {
           'Authorization': `Bearer ${token}`
         }
       });
-      // Update the status of the specific request in the local state
       setRequests(prevRequests =>
         prevRequests.map(request =>
           request.id === requestId ? { ...request, status: newStatus } : request

@@ -1,4 +1,3 @@
-// Services/LoggingService.cs
 using System;
 using System.Threading.Tasks;
 using TayinAspApi.Data;

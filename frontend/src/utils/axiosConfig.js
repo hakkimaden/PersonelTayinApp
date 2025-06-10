@@ -1,4 +1,3 @@
-// src/utils/axiosConfig.js
 import axios from 'axios';
 
 const setupAxiosInterceptors = () => {

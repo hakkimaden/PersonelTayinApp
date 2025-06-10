@@ -81,7 +81,7 @@ namespace TayinAspApi.Controllers
             public int? CurrentAdliyeId { get; set; }
 
             [JsonPropertyName("current_adliye")]
-            public AdliyeResponseDto? CurrentAdliye { get; set; } // Adliye bilgisini göndermek için
+            public AdliyeResponseDto? CurrentAdliye { get; set; } 
 
             [JsonPropertyName("created_at")]
             public DateTime CreatedAt { get; set; }
@@ -286,7 +286,7 @@ namespace TayinAspApi.Controllers
             string? documentsPath = null;
             if (model.Documents != null && model.Documents.Length > 0)
             {
-                // Fallback için WebRootPath null ise, uygulamanın çalıştığı dizini kullan
+                
                 var rootPath = _env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
                 var uploadsFolder = Path.Combine(rootPath, "uploads");
 
@@ -296,7 +296,7 @@ namespace TayinAspApi.Controllers
                 }
 
                 var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Documents.FileName;
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName); // Bu satır 307
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName); 
                 
                 try
                 {
@@ -309,7 +309,6 @@ namespace TayinAspApi.Controllers
                 catch (Exception ex)
                 {
                     // Dosya kaydetme hatasını yakala ve logla
-                    // Örneğin: _logger.LogError(ex, "Belge kaydedilirken hata oluştu.");
                     return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Belge kaydedilirken bir hata oluştu.", error = ex.Message });
                 }
             }

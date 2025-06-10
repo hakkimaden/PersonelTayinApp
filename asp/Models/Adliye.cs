@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
-using System.Text.Json.Serialization; // Bu using'i ekleyin!
+using System.Text.Json.Serialization; 
 
 namespace TayinAspApi.Models
 {
@@ -21,20 +21,20 @@ namespace TayinAspApi.Models
         [StringLength(2048)]
         public string? HaritaLinki { get; set; }
 
-        [JsonPropertyName("resim_url")] // Frontend'e giderken bu isimle görünecek
+        [JsonPropertyName("resim_url")] // Frontend'e bu isim dönecek
         [StringLength(2048)]
         public string? ResimUrl { get; set; }
 
-        [JsonPropertyName("personel_sayisi")] // Frontend'e giderken bu isimle görünecek
+        [JsonPropertyName("personel_sayisi")] // Frontend'e bu isim dönecek
         public int? PersonelSayisi { get; set; }
 
-        [JsonPropertyName("yapim_yili")] // Frontend'e giderken bu isimle görünecek
+        [JsonPropertyName("yapim_yili")] // Frontend'e bu isim dönecek
         public int? YapimYili { get; set; }
 
-        [JsonPropertyName("lojman_var_mi")] // Frontend'e giderken bu isimle görünecek
+        [JsonPropertyName("lojman_var_mi")] // Frontend'e bu isim dönecek
         public int? LojmanVarMi { get; set; }
 
-        [JsonPropertyName("cocuk_kresi_var_mi")] // Frontend'e giderken bu isimle görünecek
+        [JsonPropertyName("cocuk_kresi_var_mi")] // Frontend'e bu isim dönecek
         public int? KresVarMi { get; set; }
 
         public DateTime CreatedAt { get; set; }

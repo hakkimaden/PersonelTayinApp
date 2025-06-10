@@ -1,7 +1,6 @@
-// backend/DTOs/CreateTransferRequestDto.cs
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http; // <<< BU USING SATIRI ÇOK ÖNEMLİ!
+using Microsoft.AspNetCore.Http; 
 
 namespace TayinAspApi.DTOs
 {
@@ -18,7 +17,6 @@ namespace TayinAspApi.DTOs
         [StringLength(1000, ErrorMessage = "Gerekçe en fazla 1000 karakter olmalıdır.")]
         public string Reason { get; set; } = null!;
 
-        // BURADA OLMASI GEREKEN ÖZELLİK:
-        public IFormFile? Documents { get; set; } // İsteğe bağlı dosya
+        public IFormFile? Documents { get; set; } 
     }
 }
