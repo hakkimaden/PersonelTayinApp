@@ -1,4 +1,3 @@
-// src/pages/UserManagementPage.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,7 @@ function UserManagementPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const API_BASE_URL = 'http://127.0.0.1:8000/api'; // Laravel API URL'niz
+  const API_BASE_URL = 'http://127.0.0.1:8000/api'; // Backend API URL
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -28,7 +27,7 @@ function UserManagementPage() {
             'Authorization': `Bearer ${token}`
           }
         });
-        setUsers(response.data.users); // Laravel API'nizin kullanıcıları 'users' anahtarında döndürdüğünü varsayıyorum
+        setUsers(response.data.users); 
       } catch (err) {
         console.error('Kullanıcıları çekerken hata oluştu:', err);
         if (err.response && err.response.data && err.response.data.message) {

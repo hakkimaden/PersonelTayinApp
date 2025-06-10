@@ -12,7 +12,7 @@ namespace TayinAspApi.Models
 
         [Required(ErrorMessage = "Ad alanı zorunludur.")]
         [StringLength(255, ErrorMessage = "Ad en fazla 255 karakter olmalıdır.")]
-        public string Name { get; set; } = null!; // Uyarıyı gidermek için eklendi
+        public string Name { get; set; } = null!; 
 
         [Required(ErrorMessage = "Sicil alanı zorunludur.")]
         [Range(1, int.MaxValue, ErrorMessage = "Sicil alanı pozitif bir sayı olmalıdır.")]
@@ -20,17 +20,16 @@ namespace TayinAspApi.Models
 
         [Required(ErrorMessage = "Şifre alanı zorunludur.")]
         [StringLength(255, MinimumLength = 6, ErrorMessage = "Şifre en az 6, en fazla 255 karakter olmalıdır.")]
-        public string Password { get; set; } = null!; // Uyarıyı gidermek için eklendi
+        public string Password { get; set; } = null!; 
 
         [StringLength(20, ErrorMessage = "Telefon numarası en fazla 20 karakter olmalıdır.")]
-        public string? Telefon { get; set; } // Null atanabilir olduğunu belirtmek için '?'
+        public string? Telefon { get; set; } 
 
-        // Yeni eklenecek IsAdmin özelliği
-        public bool IsAdmin { get; set; } = false; // Varsayılan olarak false
+        public bool IsAdmin { get; set; } = false; 
 
         public int? MevcutAdliyeId { get; set; }
         [ForeignKey("MevcutAdliyeId")]
-        public Adliye? MevcutAdliye { get; set; } // Null atanabilir olduğunu belirtmek için '?'
+        public Adliye? MevcutAdliye { get; set; } 
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

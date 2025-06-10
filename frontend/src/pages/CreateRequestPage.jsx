@@ -202,7 +202,7 @@ function CreateRequestPage() {
               </h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Transfer Type */}
+                {/* Tayin Türü*/}
                 <div className="group">
                   <label htmlFor="transferType" className="block text-gray-700 text-sm font-medium mb-2">
                     Tayin Talebi Türü
@@ -229,13 +229,13 @@ function CreateRequestPage() {
                   </div>
                 </div>
 
-                {/* Adliye Selection */}
+                {/* Adliye Seçimi */}
                 <div>
                   <label className="block text-gray-700 text-sm font-medium mb-2">
                     Tayin Olmak İstediğiniz Adliyeler
                   </label>
                   
-                  {/* Search Input */}
+                  {/* arama inputu */}
                   <div className="relative mb-3">
                     <input
                       type="text"
@@ -290,7 +290,7 @@ function CreateRequestPage() {
                   )}
                 </div>
 
-                {/* Reason */}
+                {/* Açıklama */}
                 <div>
                   <label htmlFor="reason" className="block text-gray-700 text-sm font-medium mb-2">
                     Gerekçe
@@ -306,7 +306,7 @@ function CreateRequestPage() {
                   />
                 </div>
 
-                {/* File Upload */}
+                {/* Dosya yükleme */}
                 <div>
                   <label htmlFor="documents" className="block text-gray-700 text-sm font-medium mb-2">
                     Ek Belgeler (isteğe bağlı)
@@ -333,7 +333,6 @@ function CreateRequestPage() {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <div className="pt-2">
                   <button
                     type="submit"
@@ -430,13 +429,11 @@ function CreateRequestPage() {
                     </div>
                   </div>
 
-                  {/* Map Section */}
                   <div className="mt-4">
                     <h4 className="text-sm font-medium text-gray-800 mb-2 flex items-center">
                       <FaGlobe className="text-blue-500 mr-1 text-sm" /> Harita Konumu
                     </h4>
                     <div className="relative w-full rounded-lg overflow-hidden shadow-md" style={{ paddingBottom: '40%', height: 0 }}>
-                      {/* Fixed map link: it should be correctly encoded for Google Maps */}
                       <iframe
                         src={selectedAdliyeDetail.harita_linki || `https://maps.google.com/maps?q=${encodeURIComponent(selectedAdliyeDetail.adi)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
                         className="absolute top-0 left-0 w-full h-full"

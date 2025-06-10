@@ -27,8 +27,7 @@ class LogApiRequests
             'message' => "{$method} isteği '{$path}' adresine alındı.",
             'username' => $username,
             'action' => "{$method} {$path}",
-            // *** BURADA DEĞİŞİKLİK YAPIYORUZ ***
-            'details' => json_encode([ // Dizi olarak değil, JSON string olarak kaydediyoruz
+            'details' => json_encode([
                 'ip_address' => $request->ip(),
                 'request_params' => $request->all(),
             ]),
@@ -45,10 +44,9 @@ class LogApiRequests
                 'message' => "{$method} isteği '{$path}' başarıyla tamamlandı. (HTTP {$statusCode})",
                 'username' => $username,
                 'action' => "{$method} {$path}",
-                // *** BURADA DEĞİŞİKLİK YAPIYORUZ ***
                 'details' => json_encode(['status_code' => $statusCode]),
             ]);
-        } elseif ($statusCode >= 400 && $statusCode >= 500) { // Burada bir mantık hatası vardı, düzeltildi.
+        } elseif ($statusCode >= 400 && $statusCode >= 500) {
             // İstemci hataları (Validation, Not Found, Unauthorized vb.) VEYA Sunucu hataları
             $logLevel = ($statusCode >= 400 && $statusCode < 500) ? 'Warning' : 'Error';
             Log::create([
@@ -57,7 +55,6 @@ class LogApiRequests
                 'message' => "{$method} isteği '{$path}' " . ($logLevel === 'Warning' ? "bir istemci hatası ile" : "sunucu hatası ile") . " sonuçlandı. (HTTP {$statusCode})",
                 'username' => $username,
                 'action' => "{$method} {$path}",
-                // *** BURADA DEĞİŞİKLİK YAPIYORUZ ***
                 'details' => json_encode([
                     'status_code' => $statusCode,
                     'response' => $response->getContent()

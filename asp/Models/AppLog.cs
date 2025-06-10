@@ -1,4 +1,3 @@
-// Models/AppLog.cs
 using System;
 using System.ComponentModel.DataAnnotations;
 

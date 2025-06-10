@@ -12,11 +12,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'sicil',
@@ -25,39 +20,25 @@ class User extends Authenticatable
         'mevcut_adliye_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         // 'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    /**
-     * Get the transfer requests for the user.
-     */
+
     public function transferRequests()
     {
         return $this->hasMany(TransferRequest::class);
     }
 
-
     public function mevcutAdliye()
     {
         return $this->belongsTo(Adliye::class, 'mevcut_adliye_id');
     }
-
 
 }

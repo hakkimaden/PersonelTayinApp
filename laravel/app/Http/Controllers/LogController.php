@@ -38,14 +38,11 @@ class LogController extends Controller
         }
 
         // Sayfalama
-        $perPage = $request->input('pageSize', 10); // frontend'deki pageSize ile uyumlu
+        $perPage = $request->input('pageSize', 10);
         $logs = $query->orderByDesc('timestamp')->paginate($perPage);
 
         // Frontend'in beklediği formatta dönüşüm
         $logDtos = $logs->map(function ($log) {
-            // *** BURADA DEĞİŞİKLİK YAPIYORUZ ***
-            // "details" alanını JSON string olarak dönüştürüyoruz,
-            // ancak eğer boş veya null ise null bırakıyoruz.
             $decodedDetails = json_decode($log->details, true);
             $formattedDetails = $decodedDetails ? json_encode($decodedDetails, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) : null;
 
@@ -56,7 +53,7 @@ class LogController extends Controller
                 'message' => $log->message,
                 'username' => $log->username,
                 'action' => $log->action,
-                'details' => $formattedDetails, // Artık bir JSON string
+                'details' => $formattedDetails,
             ];
         });
 

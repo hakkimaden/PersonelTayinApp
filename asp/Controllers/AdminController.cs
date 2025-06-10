@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http; // StatusCodes için
-using System.Text.Json.Serialization; // JsonPropertyName için
+using Microsoft.AspNetCore.Http; 
+using System.Text.Json.Serialization; 
 
 namespace TayinAspApi.Controllers
 {
@@ -70,7 +70,6 @@ namespace TayinAspApi.Controllers
             public AdliyeResponseDto? MevcutAdliye { get; set; } // Adliye bilgileri için AdliyeResponseDto kullanıyoruz
             [JsonPropertyName("created_at")] // Frontend'de 'created_at' olarak kullanılıyor
             public DateTime CreatedAt { get; set; }
-            // 'updated_at' isterseniz ekleyebilirsiniz
         }
 
         // Adliye bilgilerini döndürmek için DTO
@@ -80,7 +79,6 @@ namespace TayinAspApi.Controllers
             public int Id { get; set; }
             [JsonPropertyName("adi")]
             public string Adi { get; set; } = null!;
-            // İl, İlçe gibi diğer adliye bilgileri de eklenebilir eğer frontend'de kullanılıyorsa
         }
 
         public class AdminTransferRequestResponseDto
@@ -92,7 +90,7 @@ namespace TayinAspApi.Controllers
             public int UserId { get; set; }
 
             [JsonPropertyName("user")]
-            public UserResponseDto? User { get; set; } // Kullanıcı bilgilerini içerecek
+            public UserResponseDto? User { get; set; }
 
             [JsonPropertyName("transfer_type")]
             public string TransferType { get; set; } = null!;
@@ -150,12 +148,12 @@ namespace TayinAspApi.Controllers
             {
                 Id = u.Id,
                 Name = u.Name ?? "Bilinmiyor",
-                Sicil = u.Sicil.ToString(), // int olan Sicil'i string'e çeviriyoruz
-                Telefon = u.Telefon, // Telefon zaten string veya nullable string
+                Sicil = u.Sicil.ToString(), // int olan Sicil'i string'e çevirdik
+                Telefon = u.Telefon, 
                 MevcutAdliyeId = u.MevcutAdliyeId,
                 // MevcutAdliye null ise null bırak, değilse AdliyeResponseDto'ya dönüştür
                 MevcutAdliye = u.MevcutAdliye != null ? new AdliyeResponseDto { Id = u.MevcutAdliye.Id, Adi = u.MevcutAdliye.Adi } : null,
-                CreatedAt = u.CreatedAt // Kayıt tarihini de ekledik
+                CreatedAt = u.CreatedAt 
             }).ToList();
 
             return Ok(new { users = userDtos });
@@ -211,11 +209,11 @@ namespace TayinAspApi.Controllers
                     {
                         Id = requestItem.User.Id,
                         Name = requestItem.User.Name ?? "Bilinmiyor",
-                        Sicil = requestItem.User.Sicil.ToString(), // int olan Sicil'i string'e çeviriyoruz
-                        Telefon = requestItem.User.Telefon, // Telefon bilgisini de ekledik
-                        MevcutAdliyeId = requestItem.User.MevcutAdliyeId, // Mevcut Adliye ID'sini ekledik
-                        MevcutAdliye = requestItem.User.MevcutAdliye != null ? new AdliyeResponseDto { Id = requestItem.User.MevcutAdliye.Id, Adi = requestItem.User.MevcutAdliye.Adi } : null, // Mevcut Adliye objesini ekledik
-                        CreatedAt = requestItem.User.CreatedAt // CreatedAt bilgisini de ekledik
+                        Sicil = requestItem.User.Sicil.ToString(), // int olan Sicil'i string'e çevirdik
+                        Telefon = requestItem.User.Telefon, 
+                        MevcutAdliyeId = requestItem.User.MevcutAdliyeId, 
+                        MevcutAdliye = requestItem.User.MevcutAdliye != null ? new AdliyeResponseDto { Id = requestItem.User.MevcutAdliye.Id, Adi = requestItem.User.MevcutAdliye.Adi } : null,
+                        CreatedAt = requestItem.User.CreatedAt
                     };
                 }
 
@@ -272,9 +270,9 @@ namespace TayinAspApi.Controllers
             return Ok(new { message = "Talep durumu başarıyla güncellendi.", request = transferRequest });
         }
 
-        // --- Yeni Eklenecek Log Endpoint'i ---
+        // Log Endpoint'i
         [HttpGet("loglar")]
-        [Authorize(Roles = "Admin")] // Bu endpoint'in sadece adminler tarafından erişilebilir olduğundan emin olalım
+        [Authorize(Roles = "Admin")] 
         public async Task<ActionResult<IEnumerable<AppLogDto>>> GetLogs(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 20,

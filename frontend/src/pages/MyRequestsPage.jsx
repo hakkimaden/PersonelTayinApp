@@ -1,8 +1,7 @@
-// src/pages/MyRequestsPage.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaTrashAlt, FaPlus, FaFileAlt } from 'react-icons/fa'; // FaFileAlt'ı ekledik
+import { FaTrashAlt, FaPlus, FaFileAlt } from 'react-icons/fa'; 
 import loadingGif from '../assets/loading.gif';
 
 function MyRequestsPage() {
@@ -15,10 +14,7 @@ function MyRequestsPage() {
   const navigate = useNavigate();
 
   const API_BASE_URL = 'http://127.0.0.1:8000/api';
-  // Backend statik dosyalarına erişim için base URL'i belirleyelim.
-  // Varsayılan olarak API_BASE_URL ile aynı olabilir, ancak dosya sunumu için farklı bir port/domain kullanıyorsanız bunu ayarlamanız gerekebilir.
-  // Şu anki durumda `http://127.0.0.1:8000` base URL'imiz olduğu için, statik dosyalar doğrudan `/uploads/` altında yer alacaktır.
-  const BASE_APP_URL = 'http://127.0.0.1:8000'; // Statik dosya sunumunun yapıldığı base URL
+  const BASE_APP_URL = 'http://127.0.0.1:8000'; 
 
   const fetchMyRequests = async () => {
     try {
@@ -229,7 +225,7 @@ function MyRequestsPage() {
                         {new Date(request.created_at).toLocaleDateString('tr-TR')}
                       </td>
                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {request.document_path || request.documents_path ? ( // İki path'ten herhangi biri varsa
+                          {request.document_path || request.documents_path ? ( // İki path'ten herhangi biri varsa | Asp ve Laravel'de dökümanlar farklı yerlerde bulunduğu için.
                               <a
                                   href={
                                       request.document_path
@@ -270,7 +266,6 @@ function MyRequestsPage() {
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6">

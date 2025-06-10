@@ -1,4 +1,3 @@
-// Services/ILoggingService.cs
 using System.Threading.Tasks;
 
 namespace TayinAspApi.Services

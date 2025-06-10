@@ -1,4 +1,3 @@
-// Controllers/AdliyeController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TayinAspApi.Data;
@@ -29,7 +28,7 @@ namespace TayinAspApi.Controllers
             return Ok(adliyeler);
         }
 
-        // GET: api/adliyeler/5
+        // GET: api/adliyeler/1
         [HttpGet("{id}")]
         public async Task<ActionResult<Adliye>> GetAdliye(int id)
         {

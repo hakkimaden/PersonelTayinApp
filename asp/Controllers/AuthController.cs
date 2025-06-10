@@ -8,9 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity; // IPasswordHasher için
+using Microsoft.AspNetCore.Identity; 
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization; // JsonPropertyName için eklendi
+using System.Text.Json.Serialization; 
 
 namespace TayinAspApi.Controllers
 {
@@ -29,7 +29,7 @@ namespace TayinAspApi.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        // DTO'lar (Data Transfer Objects)
+        // DTO'lar
         public class RegisterDto
         {
             [Required(ErrorMessage = "Ad Soyad alanı zorunludur.")]
@@ -78,10 +78,9 @@ namespace TayinAspApi.Controllers
             [JsonPropertyName("mevcut_adliye_id")]
             public int? MevcutAdliyeId { get; set; }
             [JsonPropertyName("mevcut_adliye")]
-            public Adliye? MevcutAdliye { get; set; } // Adliye modeli de DTO'ya eklenebilir veya Adliye için ayrı bir DTO kullanılabilir
-            [JsonPropertyName("is_admin")] // Admin olup olmadığını döndürmek için
+            public Adliye? MevcutAdliye { get; set; } 
+            [JsonPropertyName("is_admin")] 
             public bool IsAdmin { get; set; }
-            // Şifre gibi hassas bilgileri buraya eklemeyin
         }
 
 
@@ -157,7 +156,6 @@ namespace TayinAspApi.Controllers
                 Sicil = model.Sicil,
                 Telefon = model.Phone,
                 MevcutAdliyeId = model.CurrentAdliyeId,
-                // IsAdmin varsayılan olarak false gelecek. Admin yapmak isterseniz ayrı bir admin paneli üzerinden yapmalısınız.
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -187,7 +185,7 @@ namespace TayinAspApi.Controllers
                         Telefon = loggedInUser.Telefon,
                         MevcutAdliyeId = loggedInUser.MevcutAdliyeId,
                         MevcutAdliye = loggedInUser.MevcutAdliye,
-                        IsAdmin = loggedInUser.IsAdmin // IsAdmin bilgisini de döndür
+                        IsAdmin = loggedInUser.IsAdmin 
                     }
                 });
             }
@@ -243,7 +241,7 @@ namespace TayinAspApi.Controllers
                     Telefon = user.Telefon,
                     MevcutAdliyeId = user.MevcutAdliyeId,
                     MevcutAdliye = user.MevcutAdliye,
-                    IsAdmin = user.IsAdmin // IsAdmin bilgisini de döndür
+                    IsAdmin = user.IsAdmin 
                 }
             });
         }
@@ -276,7 +274,7 @@ namespace TayinAspApi.Controllers
                 Telefon = user.Telefon,
                 MevcutAdliyeId = user.MevcutAdliyeId,
                 MevcutAdliye = user.MevcutAdliye,
-                IsAdmin = user.IsAdmin // Frontend'e admin olup olmadığını belirtmek için
+                IsAdmin = user.IsAdmin 
             };
 
             return Ok(userProfile);

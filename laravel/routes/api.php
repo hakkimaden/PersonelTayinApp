@@ -8,25 +8,13 @@ use App\Http\Controllers\TransferRequestController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LogController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you may register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-// Public rotalar (kimlik doğrulama gerektirmez)
+// Public rotalar (kimlik doğrulamasız)
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Adliye Bilgileri (Public olabilir)
+// Adliye Bilgileri
 Route::get('/adliyeler', [AdliyeController::class, 'index']);
 Route::get('/adliyeler/{adliye}', [AdliyeController::class, 'show']);
-
 
 // Kimlik doğrulaması gerektiren rotalar
 Route::middleware('auth:sanctum')->group(function () {
@@ -35,19 +23,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/transfer-requests', [TransferRequestController::class, 'store']); // Talep oluşturma
     Route::get('/transfer-requests', [TransferRequestController::class, 'index']); // Talepleri listeleme (kullanıcının kendi)
     Route::get('/transfer-requests/{transferRequest}', [TransferRequestController::class, 'show']); // Tek bir talebi görüntüleme
-    // YENİ EKLENEN ROTA: Tayin talebi silme
-    Route::delete('/transfer-requests/{transferRequest}', [TransferRequestController::class, 'destroy']);
+    Route::delete('/transfer-requests/{transferRequest}', [TransferRequestController::class, 'destroy']); // Tayin talebi silme
 
 
     // Admin Rotaları
     Route::get('/admin/users', [AdminController::class, 'getUsers']);
     Route::get('/admin/requests', [AdminController::class, 'getRequests']);
-    Route::put('/admin/requests/{id}/status', [AdminController::class, 'updateRequestStatus']); // New route for status update
+    Route::put('/admin/requests/{id}/status', [AdminController::class, 'updateRequestStatus']);
 
-    // *** BURADAN BAŞLAYARAK LOGLAR İÇİN YENİ ROTA EKLEMESİ ***
     // Logları almak için Admin yetkisi gerektiren rota
-    Route::get('/admin/loglar', [LogController::class, 'index']); // LogController'daki 'index' metodunu çağırır
-    // *** ROTA EKLEMESİ BURADA BİTİYOR ***
+    Route::get('/admin/loglar', [LogController::class, 'index']);
 
     // Mevcut kullanıcı bilgilerini döndürür
     Route::get('/user', function (Request $request) {
