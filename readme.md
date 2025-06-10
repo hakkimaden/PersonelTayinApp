@@ -20,7 +20,7 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 * **Ön Yüz (Frontend)**: React.js ile geliştirilmiş, kullanıcı dostu arayüz
 * **Arka Yüz (Backend)**: Laravel (PHP) veya ASP.NET Core (C#) seçenekleri
-* **Veritabanı**: MySQL, PostgreSQL, SQLite veya SQL Server desteği
+* **Veritabanı**: PostgreSQL desteği
 
 ### Temel Özellikler
 
