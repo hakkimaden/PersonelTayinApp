@@ -20,7 +20,7 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 * **Ön Yüz (Frontend)**: React.js ile geliştirilmiş, kullanıcı dostu arayüz
 * **Arka Yüz (Backend)**: Laravel (PHP) veya ASP.NET Core (C#) seçenekleri
-* **Veritabanı**: MySQL, PostgreSQL, SQLite veya SQL Server desteği
+* **Veritabanı**: PostgreSQL desteği
 
 ### Temel Özellikler
 
@@ -140,7 +140,7 @@ React.js Frontend <-> REST API <-> Veritabanı
 3.  **.NET Araçlarını ve Bağımlılıkları Yükleme**
     ```bash
     dotnet tool install --global dotnet-ef
-    dotnet restore
+    dotnet restore asp.sln
     ```
 
 4.  **Veritabanı Yapılandırma**
@@ -159,7 +159,7 @@ React.js Frontend <-> REST API <-> Veritabanı
 
 5.  **Sunucuyu Başlatma**
     ```bash
-    dotnet run
+    dotnet run asp.sln
     ```
 
 ### Kurulum Sonrası Test

@@ -11,16 +11,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TayinAspApi.Services; // AdminCheckService için
 using Microsoft.OpenApi.Models; // Swagger için
-using Microsoft.EntityFrameworkCore; // Bu zaten olmalıydı
-using Npgsql.EntityFrameworkCore.PostgreSQL; // BU YENİ EKLENECEK SATIR
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL; 
 using System.Text.Json;
 using Microsoft.Extensions.FileProviders; // Bu using'i ekleyin
 using TayinAspApi.Filters; // Filtrenizi kullanmak için
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<LogActionFilter>(); // Loglama filtremizi global olarak ekliyoruz
@@ -33,7 +31,6 @@ builder.Services.AddControllers(options =>
     // Örneğin:
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; // Varsayılan olarak genellikle bu zaten ayarlanmıştır.
 
-    // Eğer tam olarak snake_case istiyorsanız, özel bir çözüm gerekebilir
     // veya Newtonsoft.Json kullanarak ayarları değiştirebilirsiniz:
     // .AddNewtonsoftJson(options =>
     // {
@@ -76,7 +73,7 @@ builder.Services.AddSwaggerGen(c =>
 
 
 // Health Checks servisini ekle
-builder.Services.AddHealthChecks(); // Bu satırı ekleyin
+builder.Services.AddHealthChecks(); 
 
 
 // CORS Politikasını Tanımlama
@@ -107,8 +104,8 @@ builder.Services.AddScoped<ILoggingService, LoggingService>();
 // AdminCheckService'i ekle
 builder.Services.AddScoped<AdminCheckService>();
 
-// IHttpContextAccessor servisini ekle (BU YENİ EKLENECEK SATIR)
-builder.Services.AddHttpContextAccessor(); // <-- Bu satırı ekleyin
+// IHttpContextAccessor servisini ekle 
+builder.Services.AddHttpContextAccessor();
 
 // PasswordHasher'ı ekle
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -139,7 +136,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// --- VERİ TOHUMLAMA (SEEDING) KISMI BAŞLANGICI ---
+// --- (SEEDING) KISMI BAŞLANGICI ---
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -148,7 +145,6 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<ApplicationDbContext>();
         var passwordHasher = services.GetRequiredService<IPasswordHasher<User>>();
 
-        // Veritabanının oluştuğundan ve geçişlerin uygulandığından emin olun.
         context.Database.Migrate();
 
         Random random = new Random();
@@ -262,7 +258,7 @@ using (var scope = app.Services.CreateScope())
                     Sicil = 221694,
                     Telefon = "5456297673",
                     MevcutAdliyeId = konyaAdliyesi.Id, // İlişkili adliye
-                    IsAdmin = true, // Admin kullanıcı yapalım
+                    IsAdmin = true, // Admin kullanıcı 
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
@@ -281,10 +277,8 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Veri tohumlama sırasında bir hata oluştu.");
     }
 }
-// --- VERİ TOHUMLAMA (SEEDING) KISMI SONU ---
+// --- (SEEDING) KISMI SONU ---
 
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -292,7 +286,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseRouting(); // Bu satırı ekleyin
+app.UseRouting(); 
 
 app.UseStaticFiles();
 
